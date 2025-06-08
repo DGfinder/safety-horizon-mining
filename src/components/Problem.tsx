@@ -2,6 +2,29 @@
 import React from 'react';
 
 const Problem = () => {
+  const costFactors = [
+    {
+      icon: '⏱️',
+      title: 'Downtime',
+      description: 'Operations shut down for days, costing millions in lost production'
+    },
+    {
+      icon: '🏢',
+      title: 'Reputational Risk',
+      description: 'Safety incidents damage stakeholder trust and social license'
+    },
+    {
+      icon: '📋',
+      title: 'Regulatory Scrutiny',
+      description: 'Authorities demand demonstrable human factors programs'
+    },
+    {
+      icon: '👥',
+      title: 'Team Morale',
+      description: 'Incidents affect workforce confidence and productivity'
+    }
+  ];
+
   return (
     <section id="problem" className="py-16 md:py-24 bg-gray-50">
       <div className="max-w-content mx-auto px-8">
@@ -14,42 +37,19 @@ const Problem = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-lg shadow-lg hover-lift">
-              <div className="text-6xl font-bold text-orange mb-4">90%</div>
+              <div className="text-6xl font-bold text-orange mb-4">95%</div>
               <h3 className="text-2xl font-semibold text-navy mb-3">
-                Of serious mining incidents trace back to human error
+                Of mining incidents involve human factors*
               </h3>
               <p className="text-muted-foreground">
-                According to 2019 ICMM and NIOSH studies, the vast majority of mining accidents stem from human factors rather than equipment failure.
+                According to Patterson & Shappell studies, the vast majority of mining accidents stem from human factors rather than equipment failure.
               </p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-start space-x-4">
-                <div className="w-2 h-2 bg-orange rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-navy">Costly Downtime</h4>
-                  <p className="text-muted-foreground">Each incident can shut down operations for days, costing millions in lost production</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="w-2 h-2 bg-orange rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-navy">Reputational Risk</h4>
-                  <p className="text-muted-foreground">Safety incidents damage stakeholder trust and social license to operate</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-4">
-                <div className="w-2 h-2 bg-orange rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-navy">Rising Regulatory Pressure</h4>
-                  <p className="text-muted-foreground">Authorities demand demonstrable human factors programs and measurable safety improvements</p>
-                </div>
-              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                *Patterson & Shappell (2010), Human Error in Mining Operations
+              </p>
             </div>
           </div>
 
@@ -60,6 +60,20 @@ const Problem = () => {
               className="rounded-lg shadow-xl w-full"
             />
             <div className="absolute inset-0 bg-navy/20 rounded-lg"></div>
+          </div>
+        </div>
+
+        {/* The Real Cost of Inaction */}
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-bold text-navy mb-8 text-center">The Real Cost of Inaction</h3>
+          <div className="grid md:grid-cols-4 gap-6">
+            {costFactors.map((factor, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl mb-4">{factor.icon}</div>
+                <h4 className="font-semibold text-navy mb-2">{factor.title}</h4>
+                <p className="text-muted-foreground text-sm">{factor.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

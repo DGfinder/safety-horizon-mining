@@ -19,13 +19,15 @@ const Resources = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Free Resource: Human Factors Checklist for Mine Supervisors
+              Download Our Free Supervisor's Guide
             </h2>
-            <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Download our comprehensive checklist that helps supervisors identify and mitigate 
-              human factors risks before they become incidents. Based on 30+ years of aviation 
-              safety protocols, adapted for mining operations.
-            </p>
+            <div className="bg-white/10 p-6 rounded-lg mb-8">
+              <h3 className="text-2xl font-bold mb-2">The 5-Minute Pre-Shift HF Briefing Checklist</h3>
+              <p className="text-white/90">
+                A practical, field-tested checklist that helps supervisors identify and mitigate 
+                human factors risks before they become incidents.
+              </p>
+            </div>
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3">

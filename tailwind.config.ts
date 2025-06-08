@@ -54,7 +54,7 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				navy: 'hsl(207 100% 17%)',
-				orange: 'hsl(33 100% 41%)',
+				orange: 'hsl(29 100% 38%)',
 				'near-black': 'hsl(220 9% 6.7%)',
 			},
 			borderRadius: {
@@ -63,7 +63,8 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				'sans': ['Inter', 'system-ui', 'sans-serif'],
+				'sans': ['Work Sans', 'system-ui', 'sans-serif'],
+				'heading': ['Inter', 'system-ui', 'sans-serif'],
 			},
 			maxWidth: {
 				'content': '1200px',

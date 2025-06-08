@@ -11,7 +11,7 @@ const Hero = () => {
 
   const downloadPitchDeck = () => {
     // Placeholder for pitch deck download
-    console.log('Downloading pitch deck...');
+    console.log('Downloading executive pitch deck...');
   };
 
   return (
@@ -20,7 +20,7 @@ const Hero = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=2000&q=80)',
+          backgroundImage: 'url(https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=2000&q=80)',
         }}
       >
         <div className="absolute inset-0 bg-navy/60"></div>
@@ -32,32 +32,40 @@ const Hero = () => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
             From Flight Deck to Mine Site:<br />
             <span className="text-orange">Aviation Human Factors</span><br />
-            Re-engineered for Mining
+            Re-engineered for Australian Mining
           </h1>
           
-          <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto">
-            27 years of cockpit-proven safety principles delivered to high-risk ground operations
+          <p className="text-xl md:text-2xl mb-4 text-white/90 max-w-3xl mx-auto">
+            Proven flight deck safety principles delivering measurable incident reduction 
+            across high-consequence ground operations
           </p>
+
+          <div className="mb-8 p-4 bg-white/10 backdrop-blur-sm rounded-lg max-w-2xl mx-auto">
+            <p className="text-lg text-white/90">
+              <strong>Who is this for?</strong> Mine Supervisors, HSE Leaders, Site GMs, 
+              and anyone accountable for operational safety.
+            </p>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button 
               onClick={scrollToContact}
               className="bg-orange text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-orange/90 transition-all duration-300 hover-lift flex items-center space-x-2"
             >
-              <span>Book a Discovery Call</span>
-              <span className="text-sm">→ Reduce Incidents</span>
+              <span>Book a Safety Strategy Call</span>
+              <span className="text-sm">→ Prevent Incidents</span>
             </button>
             
             <button 
               onClick={downloadPitchDeck}
               className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-navy transition-all duration-300 hover-lift"
             >
-              Download Pitch Deck
+              Get the Executive Pitch Deck
             </button>
           </div>
 
           <div className="mt-12 text-sm text-white/70">
-            <p>No obligation consultation • Data-driven insights</p>
+            <p>No obligation consultation • Data-driven insights • Confidential assessment</p>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import Hero from '../components/Hero';
 import Problem from '../components/Problem';
 import Solution from '../components/Solution';
 import WhyAviation from '../components/WhyAviation';
+import Curriculum from '../components/Curriculum';
 import Outcomes from '../components/Outcomes';
 import SocialProof from '../components/SocialProof';
 import About from '../components/About';
@@ -21,6 +22,7 @@ const Index = () => {
       <Problem />
       <Solution />
       <WhyAviation />
+      <Curriculum />
       <Outcomes />
       <SocialProof />
       <About />
