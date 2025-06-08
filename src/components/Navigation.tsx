@@ -25,10 +25,9 @@ const Navigation = () => {
       isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg py-2' : 'bg-transparent py-4'
     }`}>
       <div className="max-w-content mx-auto px-8 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="text-2xl font-bold text-navy">CRM</div>
-          <div className="text-sm text-muted-foreground">Mining by TSA</div>
-        </div>
+        <a href="#top" className="flex items-center gap-2">
+          <img src="/lovable-uploads/9ac6bbb6-f160-48d4-b2ec-8933079cfddc.png" alt="Crew Resource Mining logo" className="h-10 w-auto" />
+        </a>
         
         <div className="hidden md:flex items-center space-x-8">
           <button 

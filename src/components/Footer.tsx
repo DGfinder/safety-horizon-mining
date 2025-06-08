@@ -9,8 +9,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="text-2xl font-bold">CRM</div>
-              <div className="text-sm text-white/70">Mining by TSA</div>
+              <img src="/lovable-uploads/9ac6bbb6-f160-48d4-b2ec-8933079cfddc.png" alt="Crew Resource Mining logo" className="h-7 w-auto" />
             </div>
             <p className="text-white/80 mb-4 max-w-md">
               Translating aviation-grade Human Factors & Crew Resource Management 
