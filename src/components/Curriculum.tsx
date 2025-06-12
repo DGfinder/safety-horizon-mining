@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const Curriculum = () => {
@@ -66,13 +65,13 @@ const Curriculum = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-32 bg-brand-white">
       <div className="max-w-content mx-auto px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-navy mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-brand-brown-900 mb-6">
             A Comprehensive Curriculum for Total Team Readiness
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-brand-brown-600 max-w-3xl mx-auto">
             Twelve focused modules that systematically build human factors expertise 
             across your entire operation
           </p>
@@ -82,17 +81,17 @@ const Curriculum = () => {
           {modules.map((module, index) => (
             <div 
               key={index} 
-              className="bg-gray-50 p-6 rounded-lg hover-lift transition-all duration-300 border-l-4 border-orange"
+              className="bg-brand-yellow-50 p-6 rounded-r-lg hover-lift transition-all duration-300 border-l-4 border-brand-orange-500"
             >
               <div className="flex items-start space-x-4">
-                <div className="bg-navy text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                <div className="bg-brand-brown-900 text-brand-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                   {module.number}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-navy mb-2">
+                  <h3 className="text-lg font-semibold text-brand-brown-900 mb-2">
                     {module.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-brand-brown-600 text-sm">
                     {module.description}
                   </p>
                 </div>
@@ -102,8 +101,8 @@ const Curriculum = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <div className="bg-orange/10 p-6 rounded-lg inline-block">
-            <p className="text-orange font-semibold">
+          <div className="bg-brand-orange-500/10 p-6 rounded-lg inline-block">
+            <p className="text-brand-orange-500 font-semibold">
               💡 Each module includes interactive scenarios, assessment tools, and practical implementation guides
             </p>
           </div>

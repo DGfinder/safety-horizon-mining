@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 const Solution = () => {
@@ -15,7 +14,13 @@ const Solution = () => {
         'Crew resource management techniques',
         'Leadership and communication skills',
         'Just culture implementation'
-      ]
+      ],
+      image: '/img/workshops.jpg',
+      stats: {
+        value: '38%',
+        label: 'Near-misses',
+        sublabel: 'Reduction'
+      }
     },
     digital: {
       title: 'Digital LMS Modules',
@@ -27,7 +32,13 @@ const Solution = () => {
         'Mobile-responsive design',
         'Multilingual capabilities',
         'Regular content updates'
-      ]
+      ],
+      image: '/img/workshops.jpg',
+      stats: {
+        value: '92%',
+        label: 'Completion',
+        sublabel: 'Rate'
+      }
     },
     consulting: {
       title: 'Consulting',
@@ -39,33 +50,39 @@ const Solution = () => {
         'Risk factor analysis',
         'Implementation roadmap',
         'Ongoing support and monitoring'
-      ]
+      ],
+      image: '/img/workshops.jpg',
+      stats: {
+        value: '45%',
+        label: 'Efficiency',
+        sublabel: 'Improvement'
+      }
     }
   };
 
   return (
-    <section id="solution" className="py-16 md:py-24 bg-white">
+    <section id="solution" className="py-16 md:py-44 bg-brand-white">
       <div className="max-w-content mx-auto px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-navy mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-brand-brown-900 mb-6">
             Aviation-Proven Solutions for Mining
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-brand-brown-600 max-w-3xl mx-auto">
             Three comprehensive approaches to embed human factors excellence in your operation
           </p>
         </div>
 
-        <div className="bg-gray-50 rounded-lg p-8">
+        <div className=" ">
           {/* Tab Navigation */}
-          <div className="flex flex-col sm:flex-row border-b border-gray-200 mb-8">
+          <div className="flex flex-col justify-center sm:flex-row">
             {Object.entries(solutions).map(([key, solution]) => (
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
                 className={`px-6 py-4 font-semibold text-left sm:text-center transition-all duration-300 ${
                   activeTab === key
-                    ? 'text-orange border-b-2 border-orange bg-white rounded-t-lg'
-                    : 'text-muted-foreground hover:text-navy'
+                    ? 'text-brand-orange-500 border-b-2 border-brand-orange-500 bg-brand-white rounded-t-lg'
+                    : 'text-brand-brown-600 hover:text-brand-brown-900'
                 }`}
               >
                 {solution.title}
@@ -74,27 +91,27 @@ const Solution = () => {
           </div>
 
           {/* Tab Content */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+          <div className="bg-brand-yellow-50 grid md:grid-cols-2 gap-12 items-center rounded-lg overflow-hidden">
+            <div className="space-y-6 p-8">
               <div>
-                <h3 className="text-2xl font-bold text-navy mb-3">
+                <h3 className="text-2xl font-bold text-brand-brown-900 mb-3">
                   {solutions[activeTab as keyof typeof solutions].title}
                 </h3>
-                <p className="text-orange font-semibold mb-4">
+                <p className="text-brand-orange-500 font-semibold mb-4">
                   {solutions[activeTab as keyof typeof solutions].benefit}
                 </p>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-brand-brown-600 leading-relaxed">
                   {solutions[activeTab as keyof typeof solutions].description}
                 </p>
               </div>
 
               <div>
-                <h4 className="font-semibold text-navy mb-3">Key Features:</h4>
+                <h4 className="font-semibold text-brand-brown-900 mb-3">Key Features:</h4>
                 <ul className="space-y-2">
                   {solutions[activeTab as keyof typeof solutions].features.map((feature, index) => (
                     <li key={index} className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-orange rounded-full flex-shrink-0"></div>
-                      <span className="text-muted-foreground">{feature}</span>
+                      <div className="w-2 h-2 bg-brand-orange-500 rounded-full flex-shrink-0"></div>
+                      <span className="text-brand-brown-600">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -102,16 +119,18 @@ const Solution = () => {
             </div>
 
             <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?auto=format&fit=crop&w=800&q=80" 
-                alt="Mining training solution"
-                className="rounded-lg shadow-xl w-full"
-              />
-              <div className="absolute top-4 right-4 bg-white px-3 py-2 rounded-lg shadow-lg">
-                <div className="text-xs text-muted-foreground">Proven Results</div>
-                <div className="text-lg font-bold text-navy">38% ↓</div>
-                <div className="text-xs text-muted-foreground">Near-misses</div>
+              <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                <img 
+                  src={solutions[activeTab as keyof typeof solutions].image}
+                  alt={`${solutions[activeTab as keyof typeof solutions].title} illustration`}
+                  className="object-cover w-full h-full transition-opacity duration-300"
+                />
               </div>
+              {/* <div className="absolute top-4 right-4 bg-brand-white px-4 py-3 rounded-lg shadow-lg">
+                <div className="text-xs text-brand-brown-600">{solutions[activeTab as keyof typeof solutions].stats.sublabel}</div>
+                <div className="text-xl font-bold text-brand-brown-900">{solutions[activeTab as keyof typeof solutions].stats.value}</div>
+                <div className="text-xs text-brand-brown-600">{solutions[activeTab as keyof typeof solutions].stats.label}</div>
+              </div> */}
             </div>
           </div>
         </div>

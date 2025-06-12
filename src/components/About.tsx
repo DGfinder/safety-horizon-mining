@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 const About = () => {
@@ -74,13 +73,13 @@ const About = () => {
   }, []);
 
   return (
-    <section id="about" className="py-16 md:py-24 bg-gray-50">
+    <section id="about" className="pt-16 md:pt-32 bg-brand-yellow-50">
       <div className="max-w-content mx-auto px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-navy mb-6">
+          <h2 className="text-3xl md:text-5xl font-bold text-brand-brown-900 mb-6">
             Meet the Team
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-brand-brown-600 max-w-3xl mx-auto">
             Aviation experts and mining professionals united by a shared mission: 
             translating flight deck excellence into mine site safety
           </p>
@@ -91,18 +90,18 @@ const About = () => {
           {credentials.map((credential, index) => (
             <div 
               key={index} 
-              className={`bg-white p-8 rounded-lg shadow-lg text-center hover-lift transition-all duration-500 ${
+              className={`p-8  text-center transition-all duration-500 ${
                 countersTriggered ? 'animate-counter' : 'opacity-0'
               }`}
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className="text-4xl md:text-5xl font-bold text-orange mb-4">
+              <div className="text-4xl md:text-5xl font-bold text-brand-orange-500 mb-4">
                 {credential.number}
               </div>
-              <h3 className="text-lg font-semibold text-navy mb-3">
+              <h3 className="text-lg font-semibold text-brand-brown-900 mb-3">
                 {credential.label}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-brand-brown-600 text-sm leading-relaxed">
                 {credential.description}
               </p>
             </div>
@@ -120,16 +119,16 @@ const About = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="font-semibold text-navy mb-1">{member.name}</h3>
-              <p className="text-sm text-orange font-medium mb-1">{member.role}</p>
-              <p className="text-xs text-muted-foreground">{member.experience}</p>
+              <h3 className="font-semibold text-brand-brown-900 mb-1">{member.name}</h3>
+              <p className="text-sm text-brand-orange-500 font-medium mb-1">{member.role}</p>
+              <p className="text-xs text-brand-brown-600">{member.experience}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-16 bg-navy text-white p-8 rounded-lg text-center">
+        <div className="mt-16 bg-brand-brown-900 text-brand-white p-8 rounded-t-lg text-center">
           <h3 className="text-2xl font-bold mb-4">Founded by Team Safety Awareness</h3>
-          <p className="text-white/80 max-w-3xl mx-auto">
+          <p className="text-brand-white/80 max-w-3xl mx-auto">
             Established safety consultancy with deep roots in both aviation and mining. 
             Our unique cross-industry perspective delivers practical, implementable solutions 
             that create lasting safety culture transformation.
