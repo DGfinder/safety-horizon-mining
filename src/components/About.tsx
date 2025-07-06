@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 const About = () => {
   const [countersTriggered, setCountersTriggered] = useState(false);
@@ -10,31 +11,31 @@ const About = () => {
       name: 'Cassandra Cooke',
       role: 'Lead Aviation Safety Expert',
       experience: 'Former Airline Captain - 15+ years commercial aviation',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=400&q=80'
+      image: '/img/team/cassandra-cooke.png'
     },
     {
       name: 'Hayden Hamilton',
       role: 'Mining Operations Specialist',
       experience: 'Former Airline Captain - 12+ years mining safety',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80' // Placeholder until you provide photo
     },
     {
       name: 'Kym Deed',
       role: 'Human Factors Instructor',
       experience: 'Aviation CRM Specialist - 20+ years training',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80'
+      image: '/img/team/kym-deed.png'
     },
     {
       name: 'Lisa Wright',
       role: 'Safety Culture Consultant',
       experience: 'Aviation Safety Management - 18+ years',
-      image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80'
+      image: '/img/team/lisa-wright.png'
     },
     {
       name: 'Ram Patkunam',
       role: 'Technical Training Lead',
       experience: 'Flight Training Captain - 25+ years instruction',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
+      image: '/img/team/ram-patkunam.png'
     }
   ];
 
@@ -114,12 +115,23 @@ const About = () => {
         <div className="grid md:grid-cols-5 gap-8">
           {team.map((member, index) => (
             <div key={index} className="text-center">
-              <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
-                <img 
-                  src={member.image} 
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg bg-gray-100">
+                {member.image.startsWith('/img/team/') ? (
+                  <Image
+                    src={member.image}
+                    alt={`${member.name} - ${member.role}`}
+                    width={128}
+                    height={128}
+                    className="w-full h-full object-cover"
+                    priority={index < 2} // Load first 2 images with priority
+                  />
+                ) : (
+                  <img 
+                    src={member.image} 
+                    alt={`${member.name} - ${member.role}`}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               <h3 className="font-semibold text-brand-brown-900 mb-1">{member.name}</h3>
               <p className="text-sm text-brand-orange-500 font-medium mb-1">{member.role}</p>
