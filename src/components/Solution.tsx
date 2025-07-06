@@ -17,7 +17,7 @@ const Solution = () => {
         'Leadership and communication skills',
         'Just culture implementation'
       ],
-      image: '/img/workshops.jpg',
+      image: '/img/service-01.jpg',
       stats: {
         value: '38%',
         label: 'Near-misses',
@@ -35,7 +35,7 @@ const Solution = () => {
         'Multilingual capabilities',
         'Regular content updates'
       ],
-      image: '/img/workshops.jpg',
+      image: '/img/service-02.jpg',
       stats: {
         value: '92%',
         label: 'Completion',
@@ -53,7 +53,7 @@ const Solution = () => {
         'Implementation roadmap',
         'Ongoing support and monitoring'
       ],
-      image: '/img/workshops.jpg',
+      image: '/img/service-03.jpg',
       stats: {
         value: '45%',
         label: 'Efficiency',
