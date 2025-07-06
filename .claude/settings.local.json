@@ -6,7 +6,13 @@
       "Bash(npm install:*)",
       "Bash(rm:*)",
       "Bash(timeout 60 npm run build)",
-      "Bash(timeout 30 npm run dev)"
+      "Bash(timeout 30 npm run dev)",
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
