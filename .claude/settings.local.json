@@ -12,7 +12,8 @@
       "Bash(git reset:*)",
       "Bash(git commit:*)",
       "Bash(git config:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(timeout 120 npm run build)"
     ],
     "deny": []
   }

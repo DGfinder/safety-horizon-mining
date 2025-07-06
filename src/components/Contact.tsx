@@ -7,25 +7,37 @@ const Contact = () => {
     name: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
+    honeypot: '' // Bot detection field
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
     
     try {
-      await fetch('/api/contact', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit form');
+      }
+      
       setIsSubmitted(true);
     } catch (error) {
       console.error('Form submission error:', error);
-      // Handle error - for now, still show success for demo purposes
-      setIsSubmitted(true);
+      setError(error instanceof Error ? error.message : 'An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -53,8 +65,18 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="bg-brand-white p-8 rounded-lg shadow-lg">
             {!isSubmitted ? (
-              <form onSubmit={handleSubmit} className="space-y-6" netlify data-netlify="true" name="contact-form">
-                <input type="hidden" name="form-name" value="contact-form" />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot field for bot detection - hidden from humans */}
+                <input
+                  type="text"
+                  name="honeypot"
+                  value={formData.honeypot}
+                  onChange={handleChange}
+                  style={{ display: 'none' }}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+
                 <div>
                   <h3 className="text-2xl font-bold text-brand-brown-900 mb-6">Schedule LMS Demo & Safety Consultation</h3>
                 </div>
@@ -120,11 +142,18 @@ const Contact = () => {
                   />
                 </div>
 
+                {error && (
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                    {error}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full bg-brand-orange-500 text-brand-white py-4 rounded-lg font-semibold text-lg hover:bg-brand-orange-600 transition-colors hover-lift"
+                  disabled={isSubmitting}
+                  className="w-full bg-brand-orange-500 text-brand-white py-4 rounded-lg font-semibold text-lg hover:bg-brand-orange-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors hover-lift"
                 >
-                  Book Discovery Call →
+                  {isSubmitting ? 'Submitting...' : 'Book Discovery Call →'}
                 </button>
 
                 <p className="text-xs text-brand-brown-600 text-center">
