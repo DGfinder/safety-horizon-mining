@@ -32,7 +32,7 @@ const About = () => {
       image: '/img/team/lisa-wright.png'
     },
     {
-      name: 'Ram Mutukrishnan',
+      name: 'Ram Muthukrishnan',
       role: 'Human Factors Instructor',
       experience: 'Airline Captain & HF NTS Instructor - 25+ years experience',
       image: '/img/team/ram-patkunam.png'
