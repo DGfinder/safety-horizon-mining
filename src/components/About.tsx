@@ -9,32 +9,32 @@ const About = () => {
   const team = [
     {
       name: 'Cassandra Cooke',
-      role: 'Lead Aviation Safety Expert',
-      experience: 'Former Airline Captain - 15+ years commercial aviation',
+      role: 'Founder & Lead Aviation Safety Expert',
+      experience: 'Airline Captain & HF NTS Instructor - 35+ years aviation experience',
       image: '/img/team/cassandra-cooke.png'
     },
     {
       name: 'Hayden Hamilton',
-      role: 'Mining Operations Specialist',
-      experience: 'Former Airline Captain - 12+ years mining safety',
+      role: 'Mining Operations & Aviation Safety',
+      experience: 'Current Corporate Pilot - 4 years mining safety',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80' // Placeholder until you provide photo
     },
     {
       name: 'Kym Deed',
-      role: 'Human Factors Instructor',
-      experience: 'Aviation CRM Specialist - 20+ years training',
+      role: 'Technical Training Lead',
+      experience: 'Check & Training Captain - 40+ years experience',
       image: '/img/team/kym-deed.png'
     },
     {
       name: 'Lisa Wright',
-      role: 'Safety Culture Consultant',
-      experience: 'Aviation Safety Management - 18+ years',
+      role: 'Human Factors Instructor ',
+      experience: 'Pilot & Aviation Safety Workshops - 20+ years',
       image: '/img/team/lisa-wright.png'
     },
     {
-      name: 'Ram Patkunam',
-      role: 'Technical Training Lead',
-      experience: 'Flight Training Captain - 25+ years instruction',
+      name: 'Ram Mutukrishnan',
+      role: 'Human Factors Instructor',
+      experience: 'Airline Captain & HF NTS Instructor - 25+ years experience',
       image: '/img/team/ram-patkunam.png'
     }
   ];
@@ -43,15 +43,15 @@ const About = () => {
     {
       number: '100+',
       label: 'Years Combined Captain Experience',
-      description: 'Former airline captains with decades of commercial flight deck experience'
+      description: 'Current and Former airline captains with decades of commercial flight deck experience'
     },
     {
       number: '5',
       label: 'Aviation Safety Experts',
-      description: 'Former airline captains and certified human factors specialists'
+      description: 'Experienced airline pilots and certified human factors specialists'
     },
     {
-      number: '20k+',
+      number: '100k+',
       label: 'Flight Hours',
       description: 'Extensive real-world experience in high-stakes safety environments'
     }
@@ -122,14 +122,14 @@ const About = () => {
                     alt={`${member.name} - ${member.role}`}
                     width={128}
                     height={128}
-                    className="w-full h-full object-cover object-center"
+                    className="w-full h-full object-cover"
                     priority={index < 2} // Load first 2 images with priority
                   />
                 ) : (
                   <img 
                     src={member.image} 
                     alt={`${member.name} - ${member.role}`}
-                    className="w-full h-full object-cover object-center"
+                    className="w-full h-full object-cover"
                   />
                 )}
               </div>
