@@ -7,31 +7,31 @@ const About = () => {
     {
       name: 'Cassandra Cooke',
       role: 'Lead Aviation Safety Expert',
-      experience: '15+ years commercial aviation',
+      experience: 'Former Airline Captain - 15+ years commercial aviation',
       image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=400&q=80'
     },
     {
       name: 'Hayden Hamilton',
       role: 'Mining Operations Specialist',
-      experience: '12+ years mining safety',
+      experience: 'Former Airline Captain - 12+ years mining safety',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
     },
     {
       name: 'Kym Deed',
       role: 'Human Factors Instructor',
-      experience: '20+ years training development',
+      experience: 'Aviation CRM Specialist - 20+ years training',
       image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80'
     },
     {
       name: 'Lisa Wright',
       role: 'Safety Culture Consultant',
-      experience: '18+ years organizational development',
+      experience: 'Aviation Safety Management - 18+ years',
       image: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80'
     },
     {
       name: 'Ram Patkunam',
       role: 'Technical Training Lead',
-      experience: '25+ years technical instruction',
+      experience: 'Flight Training Captain - 25+ years instruction',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
     }
   ];
@@ -39,18 +39,18 @@ const About = () => {
   const credentials = [
     {
       number: '100+',
-      label: 'Years Combined Aviation Experience',
-      description: 'Proven track record across commercial and military aviation'
+      label: 'Years Combined Captain Experience',
+      description: 'Former airline captains with decades of commercial flight deck experience'
     },
     {
       number: '5',
-      label: 'Expert HF Instructors',
-      description: 'Certified human factors specialists and safety professionals'
+      label: 'Aviation Safety Experts',
+      description: 'Former airline captains and certified human factors specialists'
     },
     {
-      number: '4',
-      label: 'Continents Trained',
-      description: 'Global experience adapting safety programs across cultures'
+      number: '20k+',
+      label: 'Flight Hours',
+      description: 'Extensive real-world experience in high-stakes safety environments'
     }
   ];
 

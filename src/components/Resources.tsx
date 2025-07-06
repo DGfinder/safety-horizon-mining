@@ -18,32 +18,32 @@ const Resources = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="text-brand-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Download Our Free Supervisor's Guide
+              Preview Our Aviation-Grade Training
             </h2>
             <div className="bg-brand-white/10 p-6 rounded-lg mb-8">
-              <h3 className="text-2xl font-bold mb-2">The 5-Minute Pre-Shift HF Briefing Checklist</h3>
+              <h3 className="text-2xl font-bold mb-2">LMS Module Demo & Safety Assessment</h3>
               <p className="text-brand-white/90">
-                A practical, field-tested checklist that helps supervisors identify and mitigate 
-                human factors risks before they become incidents.
+                Experience firsthand how our former airline captains translate flight deck safety 
+                principles into practical mining applications.
               </p>
             </div>
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-brand-white rounded-full flex-shrink-0"></div>
-                <span>Pre-shift risk assessment framework</span>
+                <span>Interactive LMS module walkthrough</span>
               </div>
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-brand-white rounded-full flex-shrink-0"></div>
-                <span>Communication protocol templates</span>
+                <span>Aviation CRM principles for mining</span>
               </div>
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-brand-white rounded-full flex-shrink-0"></div>
-                <span>Decision-making decision trees</span>
+                <span>Safety culture assessment consultation</span>
               </div>
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-brand-white rounded-full flex-shrink-0"></div>
-                <span>Situational awareness indicators</span>
+                <span>Customized implementation roadmap</span>
               </div>
             </div>
           </div>
@@ -52,9 +52,9 @@ const Resources = () => {
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-brand-brown-900 mb-2">Get Your Free Checklist</h3>
+                  <h3 className="text-2xl font-bold text-brand-brown-900 mb-2">Schedule Your Demo</h3>
                   <p className="text-brand-brown-600 mb-6">
-                    Enter your email to download instantly
+                    Book a personalized LMS demo and safety consultation
                   </p>
                 </div>
 
@@ -77,7 +77,7 @@ const Resources = () => {
                   type="submit"
                   className="w-full bg-brand-brown-900 text-brand-white py-3 rounded-lg font-semibold hover:bg-brand-brown-800 transition-colors hover-lift"
                 >
-                  Download Free Checklist
+                  Schedule Demo Call
                 </button>
 
                 <p className="text-xs text-brand-brown-600 text-center">
@@ -89,8 +89,8 @@ const Resources = () => {
                 <div className="text-green-500 text-5xl mb-4">✓</div>
                 <h3 className="text-2xl font-bold text-brand-brown-900 mb-2">Thank You!</h3>
                 <p className="text-brand-brown-600">
-                  Check your email for the download link. The checklist will help you implement 
-                  aviation-grade safety protocols immediately.
+                  Thank you for your interest! We'll contact you within 24 hours to schedule your 
+                  personalized LMS demo and safety consultation.
                 </p>
               </div>
             )}

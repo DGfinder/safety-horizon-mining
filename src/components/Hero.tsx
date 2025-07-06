@@ -8,11 +8,6 @@ const Hero = () => {
     }
   };
 
-  const downloadPitchDeck = () => {
-    // Placeholder for pitch deck download
-    console.log('Downloading executive pitch deck...');
-  };
-
   return (
     <section id="top" className="relative min-h-screen h-[45vh] sm:min-h-screen flex items-center justify-center">
       {/* Background Image with Overlay */}
@@ -34,7 +29,7 @@ const Hero = () => {
           </h1>
           
           <p className="mt-4 text-brand-white/90 text-lg md:text-xl max-w-xl mx-auto">
-            Aviation-grade Human Factors re-engineered for Australian mining.
+            Led by airline captains with decades of experience, bringing aviation's proven safety transformation to mining operations.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -42,14 +37,14 @@ const Hero = () => {
               onClick={scrollToContact}
               className="bg-brand-orange-500 text-brand-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-orange-600 transition-all duration-300 hover-lift"
             >
-              Book a Safety Strategy Call
+              Schedule LMS Demo
             </button>
             
             <button 
-              onClick={downloadPitchDeck}
+              onClick={scrollToContact}
               className="border-2 border-brand-white text-brand-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-brand-white hover:text-brand-brown-900 transition-all duration-300 hover-lift"
             >
-              Download Executive Pitch Deck
+              Book Safety Consultation
             </button>
           </div>
         </div>

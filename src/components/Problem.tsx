@@ -46,15 +46,15 @@ const Problem = () => {
           </div>
           <div className="md:col-span-2 space-y-6">
             <div className="md:p-8 rounded-lg">
-              <div className="text-6xl font-bold text-brand-orange-500 mb-4">95%</div>
+              <div className="text-6xl font-bold text-brand-orange-500 mb-4">#1</div>
               <h3 className="text-2xl font-semibold text-brand-brown-900 mb-3">
-                Of mining incidents involve human factors*
+                Human factors are the leading cause of mining incidents
               </h3>
               <p className="text-brand-brown-600">
-                According to Patterson & Shappell studies, the vast majority of mining accidents stem from human factors rather than equipment failure.
+                Just as aviation transformed from reactive to proactive safety through human factors training, mining operations can achieve similar breakthrough results.
               </p>
               <p className="text-xs text-brand-brown-500 mt-2">
-                *Patterson & Shappell (2010), Human Error in Mining Operations
+                *Aviation industry reduced fatality rates by 95% through systematic human factors programs
               </p>
             </div>
           </div>

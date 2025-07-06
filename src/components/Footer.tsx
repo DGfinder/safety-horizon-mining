@@ -51,7 +51,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-brand-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-brand-white/60">
-          <p>&copy; 2024 CRM Mining by TSA. All rights reserved.</p>
+          <p>&copy; 2024 Crew Resource Mining by TSA. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <button className="hover:text-brand-white transition-colors">Privacy Policy</button>
             <button className="hover:text-brand-white transition-colors">Terms of Service</button>
