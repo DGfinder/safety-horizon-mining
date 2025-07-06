@@ -122,14 +122,14 @@ const About = () => {
                     alt={`${member.name} - ${member.role}`}
                     width={128}
                     height={128}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                     priority={index < 2} // Load first 2 images with priority
                   />
                 ) : (
                   <img 
                     src={member.image} 
                     alt={`${member.name} - ${member.role}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                   />
                 )}
               </div>
