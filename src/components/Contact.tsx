@@ -206,11 +206,11 @@ const Contact = () => {
               <div className="space-y-3">
                 <div>
                   <span className="font-semibold text-brand-brown-900">Phone:</span>
-                  <span className="ml-2 text-brand-brown-600">+61 8 6558 1092</span>
+                  <span className="ml-2 text-brand-brown-600">+61 8 9450 7469</span>
                 </div>
                 <div>
                   <span className="font-semibold text-brand-brown-900">Email:</span>
-                  <span className="ml-2 text-brand-brown-600">info@crmmining.com.au</span>
+                  <span className="ml-2 text-brand-brown-600">info@crewresourcemining.com.au</span>
                 </div>
                 <div>
                   <span className="font-semibold text-brand-brown-900">Location:</span>

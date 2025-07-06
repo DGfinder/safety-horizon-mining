@@ -43,8 +43,8 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4 text-brand-orange-500">Contact</h4>
             <div className="space-y-2 text-sm text-brand-white/80">
-              <p>+61 8 9000 0000</p>
-              <p>contact@crmmining.com.au</p>
+              <p>+61 8 9450 7469</p>
+              <p>info@crewresourcemining.com.au</p>
               <p>Perth, WA</p>
             </div>
           </div>

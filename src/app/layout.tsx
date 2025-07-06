@@ -8,12 +8,12 @@ export const metadata: Metadata = {
   authors: [{ name: 'Team Safety Awareness' }],
   openGraph: {
     type: 'website',
-    url: 'https://crmmining.com.au/',
+    url: 'https://crewresourcemining.com.au/',
     title: 'Aviation Captains Bringing Flight Deck Safety to Mining',
     description: 'Led by former airline captains with decades of experience. Transform your mining safety culture with aviation-proven Crew Resource Management principles.',
     images: [
       {
-        url: 'https://crmmining.com.au/img/hero-image.jpg',
+        url: 'https://crewresourcemining.com.au/img/hero-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Crew Resource Mining - Aviation Safety for Mining',
@@ -24,11 +24,11 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Aviation Captains Bringing Flight Deck Safety to Mining',
     description: 'Led by former airline captains with decades of experience. Transform your mining safety culture with aviation-proven Crew Resource Management principles.',
-    images: ['https://crmmining.com.au/img/hero-image.jpg'],
+    images: ['https://crewresourcemining.com.au/img/hero-image.jpg'],
   },
   other: {
-    'contact-phone': '+61-8-6558-1092',
-    'contact-email': 'info@crmmining.com.au',
+    'contact-phone': '+61-8-9450-7469',
+    'contact-email': 'info@crewresourcemining.com.au',
   },
 }
 
@@ -49,13 +49,13 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Crew Resource Mining by TSA",
               "description": "Aviation-grade Human Factors & Crew Resource Management training for mining operations",
-              "url": "https://crmmining.com.au",
-              "logo": "https://crmmining.com.au/logo.png",
+              "url": "https://crewresourcemining.com.au",
+              "logo": "https://crewresourcemining.com.au/logo.png",
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+61-8-6558-1092",
+                "telephone": "+61-8-9450-7469",
                 "contactType": "customer service",
-                "email": "info@crmmining.com.au"
+                "email": "info@crewresourcemining.com.au"
               }
             })
           }}
