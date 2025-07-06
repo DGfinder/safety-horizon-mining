@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 
 const Contact = () => {
@@ -13,14 +15,10 @@ const Contact = () => {
     e.preventDefault();
     
     try {
-      // Using Netlify Forms for form handling
-      const formElement = e.target as HTMLFormElement;
-      const formData = new FormData(formElement);
-      
-      await fetch('/', {
+      await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData as unknown as Record<string, string>).toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
       
       setIsSubmitted(true);
