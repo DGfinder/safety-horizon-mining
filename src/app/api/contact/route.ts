@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is available
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Rate limiting store (in production, use Redis or database)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -55,6 +55,10 @@ async function sendNotificationEmail(data: {
   company: string;
   message: string;
 }) {
+  if (!resend) {
+    throw new Error('Email service not configured - missing RESEND_API_KEY');
+  }
+
   const fromEmail = process.env.FROM_EMAIL || 'noreply@crewresourcemining.com.au';
   const toEmail = process.env.TO_EMAIL || 'info@crewresourcemining.com.au';
   const ccEmail = process.env.CC_EMAIL;
