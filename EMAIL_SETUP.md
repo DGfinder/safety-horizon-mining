@@ -20,8 +20,8 @@ The contact form is now configured to send email notifications using [Resend](ht
 3. **Configure Environment Variables**
    - Update `.env.local` with your actual values:
    ```
-   RESEND_API_KEY=re_your_actual_api_key_here
-   FROM_EMAIL=noreply@crewresourcemining.com.au
+   RESEND_API_KEY=re_QFE2bBem_4dE34NzRrbn8ejLeZ9DMwKAP
+   FROM_EMAIL=info@crewresourcemining.com.au
    TO_EMAIL=info@crewresourcemining.com.au
    ```
 

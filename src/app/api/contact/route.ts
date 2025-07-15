@@ -138,13 +138,35 @@ export async function POST(request: NextRequest) {
     });
     
     // Send notification email
+    let emailSent = false;
+    let emailError = null;
+    
     try {
-      await sendNotificationEmail(sanitizedData);
-      console.log('Notification email sent successfully');
-    } catch (emailError) {
-      console.error('Failed to send notification email:', emailError);
-      // Continue with success response even if email fails
-      // You might want to log this to an error tracking service
+      const emailResult = await sendNotificationEmail(sanitizedData);
+      console.log('Notification email sent successfully:', {
+        id: emailResult.data?.id,
+        timestamp: new Date().toISOString()
+      });
+      emailSent = true;
+    } catch (error: any) {
+      emailError = error.message || 'Unknown email error';
+      console.error('Failed to send notification email:', {
+        error: emailError,
+        data: sanitizedData,
+        config: {
+          hasApiKey: !!process.env.RESEND_API_KEY,
+          fromEmail: process.env.FROM_EMAIL,
+          toEmail: process.env.TO_EMAIL,
+          ccEmail: process.env.CC_EMAIL
+        }
+      });
+      
+      // Log specific error types for debugging
+      if (error.message?.includes('domain')) {
+        console.error('DOMAIN ERROR: Please verify your domain in Resend dashboard');
+      } else if (error.message?.includes('API key')) {
+        console.error('API KEY ERROR: Invalid Resend API key');
+      }
     }
     
     return NextResponse.json(
