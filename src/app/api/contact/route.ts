@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Resend } from 'resend';
+
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Rate limiting store (in production, use Redis or database)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -44,6 +48,53 @@ function sanitizeInput(input: string): string {
     .replace(/\//g, '&#x2F;');
 }
 
+// Email sending function
+async function sendNotificationEmail(data: {
+  name: string;
+  email: string;
+  company: string;
+  message: string;
+}) {
+  const fromEmail = process.env.FROM_EMAIL || 'noreply@crewresourcemining.com.au';
+  const toEmail = process.env.TO_EMAIL || 'info@crewresourcemining.com.au';
+  const ccEmail = process.env.CC_EMAIL;
+  
+  try {
+    const emailResult = await resend.emails.send({
+      from: fromEmail,
+      to: [toEmail],
+      cc: ccEmail ? [ccEmail] : undefined,
+      replyTo: data.email,
+      subject: `New Contact Form Submission from ${data.name}`,
+      html: `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Company & Role:</strong> ${data.company}</p>
+        <p><strong>Message:</strong></p>
+        <p>${data.message || 'No message provided'}</p>
+        <hr>
+        <p><em>Submitted via crewresourcemining.com.au contact form</em></p>
+      `,
+      text: `
+New Contact Form Submission
+
+Name: ${data.name}
+Email: ${data.email}
+Company & Role: ${data.company}
+Message: ${data.message || 'No message provided'}
+
+Submitted via crewresourcemining.com.au contact form
+      `
+    });
+    
+    return emailResult;
+  } catch (error) {
+    console.error('Email sending failed:', error);
+    throw error;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Get client IP for rate limiting
@@ -79,15 +130,22 @@ export async function POST(request: NextRequest) {
       message: validatedData.message ? sanitizeInput(validatedData.message) : '',
     };
     
-    // Log successful submission (in production, save to database/send email)
+    // Log successful submission
     console.log('Valid contact form submission:', {
       ...sanitizedData,
       ip,
       timestamp: new Date().toISOString(),
     });
     
-    // Here you would integrate with email service (SendGrid, Resend, etc.)
-    // await sendNotificationEmail(sanitizedData);
+    // Send notification email
+    try {
+      await sendNotificationEmail(sanitizedData);
+      console.log('Notification email sent successfully');
+    } catch (emailError) {
+      console.error('Failed to send notification email:', emailError);
+      // Continue with success response even if email fails
+      // You might want to log this to an error tracking service
+    }
     
     return NextResponse.json(
       { message: 'Thank you for your inquiry! We\'ll contact you within 24 hours.' },

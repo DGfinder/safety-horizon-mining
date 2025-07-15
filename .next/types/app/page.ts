@@ -1,4 +1,4 @@
-// File: /mnt/c/Users/Hayden/Downloads/safety-horizon-mining/src/app/page.tsx
+// File: /mnt/c/Users/HaydenHamilton/Downloads/safety-horizon-mining/src/app/page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
