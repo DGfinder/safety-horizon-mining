@@ -16,7 +16,9 @@
       "Bash(timeout 120 npm run build)",
       "Bash(grep:*)",
       "Bash(cp:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "WebFetch(domain:www.crewresourcemining.com.au)",
+      "Bash(timeout 15 npm run dev)"
     ],
     "deny": []
   }
