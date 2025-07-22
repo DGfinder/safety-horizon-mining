@@ -55,6 +55,12 @@ const Navigation = () => {
           >
             About TSA
           </button>
+          <a 
+            href="/blog"
+            className="max-md:hidden text-sm font-medium hover:opacity-70 transition-opacity"
+          >
+            Insights
+          </a>
           <button 
             onClick={() => scrollToSection('contact')}
             className="bg-brand-orange-500 text-brand-white px-6 py-2 rounded-sm font-medium hover:bg-brand-orange-600 transition-all duration-300 hover-lift"
