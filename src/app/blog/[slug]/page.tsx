@@ -13,23 +13,47 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
+  // Use SEO metadata if available, otherwise fallback to defaults
+  const metaTitle = post.seo?.metaTitle || `${post.title} | Crew Resource Mining`;
+  const metaDescription = post.seo?.metaDescription || post.excerpt;
+  const keywords = post.seo?.keywords?.join(', ') || `${post.category.toLowerCase()}, mining safety, aviation CRM, crew resource management, ${post.author.toLowerCase().replace(' ', '-')}, human factors training`;
+  const canonicalUrl = post.seo?.canonicalUrl || `https://crewresourcemining.com.au/blog/${post.slug}`;
+
   return {
-    title: `${post.title} | Crew Resource Mining`,
-    description: post.excerpt,
-    keywords: `${post.category.toLowerCase()}, mining safety, aviation CRM, crew resource management, ${post.author.toLowerCase().replace(' ', '-')}, human factors training`,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: keywords,
     authors: [{ name: post.author }],
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: post.seo?.metaTitle || post.title,
+      description: metaDescription,
       type: 'article',
-      url: `https://crewresourcemining.com.au/blog/${post.slug}`,
+      url: canonicalUrl,
       publishedTime: post.date,
       authors: [post.author],
+      siteName: 'Crew Resource Mining',
+      locale: 'en_AU',
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: post.excerpt,
+      title: post.seo?.metaTitle || post.title,
+      description: metaDescription,
+      site: '@CrewResourceMining',
+      creator: '@CrewResourceMining',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }

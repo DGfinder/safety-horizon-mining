@@ -9,9 +9,156 @@ export interface BlogPost {
   category: string;
   featured: boolean;
   content: string;
+  seo?: {
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string[];
+    canonicalUrl?: string;
+  };
 }
 
 export const blogPostsData: BlogPost[] = [
+  {
+    slug: "top-5-human-factors-mining-incidents",
+    title: "The Top 5 Human Factors That Lead to Mining Incidents (And How to Fix Them)",
+    excerpt: "A deep dive into the 5 most common human factors that lead to mining incidents, including fatigue and communication failures. Learn practical, proven strategies to enhance safety and performance on your site.",
+    author: "The Crew Resource Mining Team",
+    authorRole: "Aviation Safety Experts",
+    date: "2025-07-22",
+    readTime: "8 min read",
+    category: "Human Factors",
+    featured: true,
+    seo: {
+      metaTitle: "The Top 5 Human Factors in Mining Incidents & How to Fix Them",
+      metaDescription: "A deep dive into the 5 most common human factors that lead to mining incidents, including fatigue and communication failures. Learn practical, proven strategies to enhance safety and performance on your site.",
+      keywords: [
+        "human factors mining",
+        "mining safety",
+        "mining incidents", 
+        "crew resource management mining",
+        "FIFO fatigue management",
+        "mining safety culture",
+        "aviation safety mining",
+        "situational awareness mining",
+        "communication mining safety",
+        "mining human factors training"
+      ],
+      canonicalUrl: "https://crewresourcemining.com.au/blog/top-5-human-factors-mining-incidents"
+    },
+    content: `
+      <p>The Australian mining industry has made incredible strides in engineering and equipment safety. We operate some of the most advanced machinery on the planet. Yet, incidents still happen. And when they do, the cause is rarely a spontaneous mechanical failure.</p>
+      
+      <p>The data is clear: up to 85% of serious incidents can be linked to human decision-making and human factors [1].</p>
+      
+      <p>These aren't just simple mistakes. They are predictable, preventable system failures that begin long before the incident itself. Understanding these factors is the first step to building a truly resilient safety culture.</p>
+      
+      <p>This article breaks down the five most critical human factors that contribute to mining incidents and provides practical, proven strategies to address them head-on.</p>
+
+      <h2>1. Situational Awareness Failure</h2>
+      <p><strong>What it is:</strong> Situational Awareness (SA) is knowing what is happening around you and, more importantly, what is likely to happen next. In mining, a loss of SA can be catastrophic. It's the operator who doesn't notice a ute entering their path, or the maintenance fitter who becomes so focused on one task they miss a change in their surroundings.</p>
+      
+      <p><strong>Why it happens:</strong></p>
+      <ul>
+        <li><strong>Complacency:</strong> The "I've done this a thousand times" mindset is the enemy of awareness. Familiarity can lead to missed changes in routine tasks.</li>
+        <li><strong>Distraction:</strong> Non-critical radio chatter, noise, and mental fatigue can pull focus away from the immediate environment.</li>
+        <li><strong>Task Fixation:</strong> Tunnel vision on a single complex problem, causing you to ignore everything else.</li>
+      </ul>
+      
+      <p><strong>How to fix it:</strong></p>
+      <ul>
+        <li><strong>Implement Pre-Task Scans:</strong> Train teams to consciously pause and scan their environment before starting any task, asking "What has changed?"</li>
+        <li><strong>Promote Assertive Communication:</strong> Create a culture where any team member, regardless of seniority, is expected to speak up if they see a colleague losing awareness.</li>
+        <li><strong>Manage Cognitive Load:</strong> During critical tasks, enforce a "sterile cockpit" mentality—no non-essential conversations or distractions.</li>
+      </ul>
+
+      <h2>2. Communication Breakdown</h2>
+      <p><strong>What it is:</strong> Effective communication isn't about talking; it's about creating a shared understanding. A communication failure occurs when a message is sent but not received or understood correctly. This is a leading cause of incidents, especially during vehicle movements and handovers.</p>
+      
+      <p><strong>Why it happens:</strong></p>
+      <ul>
+        <li><strong>Assumptions:</strong> Assuming the other person has the same information or understands your intention without confirmation.</li>
+        <li><strong>Environmental Barriers:</strong> High ambient noise, radio static, and poor reception can garble critical messages.</li>
+        <li><strong>Hierarchy Pressure:</strong> Junior workers may feel hesitant to question or ask for clarification from a supervisor, leading them to proceed with uncertainty.</li>
+      </ul>
+      
+      <p><strong>How to fix it:</strong></p>
+      <ul>
+        <li><strong>Mandate Closed-Loop Communication:</strong> This is a core aviation principle. The receiver must repeat back the critical parts of an instruction to confirm they have understood it correctly. For example, "Confirm, I am clear to reverse onto Ramp 5."</li>
+        <li><strong>Use Standardised Language:</strong> Use clear, simple, agreed-upon terms for common operations to reduce ambiguity.</li>
+        <li><strong>Conduct Better Briefings:</strong> Ensure pre-start and handover meetings are structured, concise, and allow time for questions to ensure everyone is on the same page.</li>
+      </ul>
+
+      <h2>3. Fatigue</h2>
+      <p><strong>What it is:</strong> Fatigue is not just "feeling tired." It is a state of cognitive and physical impairment that significantly degrades judgment, reaction time, and decision-making. For FIFO and DIDO workers, it is one of the most serious and insidious risks. Studies have shown that being awake for 18 hours can impair performance as much as having a blood alcohol content of 0.05 [2].</p>
+      
+      <p><strong>Why it happens:</strong></p>
+      <ul>
+        <li><strong>Sleep Debt:</strong> The cumulative effect of not getting 7-9 hours of quality sleep per night.</li>
+        <li><strong>Circadian Rhythm Disruption:</strong> The human body is not designed to be fully alert at 2 AM. Night shifts disrupt our natural biological clock.</li>
+        <li><strong>Environmental Stressors:</strong> Constant exposure to heat, vibration, and noise drains mental and physical reserves.</li>
+      </ul>
+      
+      <p><strong>How to fix it:</strong></p>
+      <ul>
+        <li><strong>Implement a Fatigue Risk Management System (FRMS):</strong> This goes beyond policy. It involves roster design that allows for genuine recovery, monitoring cumulative work hours, and having clear procedures for when a worker reports as unfit for duty due to fatigue.</li>
+        <li><strong>Foster a Reporting Culture:</strong> Workers must be encouraged and protected when they raise fatigue concerns. It must be treated as a legitimate safety issue, not a personal weakness.</li>
+        <li><strong>Train for Personal Mitigation:</strong> Educate your team on sleep hygiene, nutrition, and hydration strategies to build personal resilience against fatigue.</li>
+      </ul>
+
+      <h2>4. Decision-Making Under Pressure</h2>
+      <p><strong>What it is:</strong> The mining environment is dynamic. When unexpected events occur, teams must make high-stakes decisions under immense time pressure. Poor decisions in these moments often happen when stress causes individuals to deviate from procedure or take risky shortcuts.</p>
+      
+      <p><strong>Why it happens:</strong></p>
+      <ul>
+        <li><strong>Cognitive Tunneling:</strong> Stress can cause individuals to focus on only one or two aspects of a problem, ignoring other critical information.</li>
+        <li><strong>Production Pressure:</strong> An overwhelming focus on meeting targets can lead teams to accept risks they normally wouldn't.</li>
+        <li><strong>Lack of Practice:</strong> Teams rarely get to practice managing emergency or non-normal situations, so their response can be hesitant or flawed when a real event occurs.</li>
+      </ul>
+      
+      <p><strong>How to fix it:</strong></p>
+      <ul>
+        <li><strong>Scenario-Based Training:</strong> Regularly train teams in realistic simulators or tabletop exercises that replicate high-pressure, non-normal events. This builds "mental muscle memory."</li>
+        <li><strong>Provide Simple Frameworks:</strong> Teach simple decision-making models (like DODAR: Diagnose, Options, Decide, Assign, Review) that can be easily recalled and applied under stress.</li>
+        <li><strong>Empower Frontline Leaders:</strong> Ensure supervisors are trained to manage pressure, control the tempo of a situation, and allocate resources effectively during a crisis.</li>
+      </ul>
+
+      <h2>5. Poor Teamwork & Hierarchy Pressure</h2>
+      <p><strong>What it is:</strong> A high-performing team is a safety system in itself. Poor teamwork, often caused by steep authority gradients or a lack of psychological safety, prevents crews from effectively trapping each other's errors.</p>
+      
+      <p><strong>Why it happens:</strong></p>
+      <ul>
+        <li><strong>Lack of Trust:</strong> Team members don't feel comfortable challenging each other or admitting uncertainty.</li>
+        <li><strong>"Silo" Mentality:</strong> A lack of coordination and communication between different teams (e.g., maintenance vs. operations) creates gaps where hazards can emerge.</li>
+        <li><strong>Intimidation:</strong> A supervisor or senior team member who is not approachable can shut down vital communication from junior members who may have spotted a hazard.</li>
+      </ul>
+      
+      <p><strong>How to fix it:</strong></p>
+      <ul>
+        <li><strong>Crew Resource Management (CRM) Training:</strong> This is the cornerstone of the solution. CRM training provides teams with a shared set of skills and a common language for communication, leadership, and mutual support.</li>
+        <li><strong>Leadership Development:</strong> Train your supervisors and managers to lead by example, creating an environment where every team member is expected to contribute to safety, regardless of their role.</li>
+        <li><strong>Promote Cross-Checking:</strong> Build a culture where team members actively monitor each other's work and blind spots as a standard part of how they operate.</li>
+      </ul>
+
+      <h2>Conclusion: From Reactive Blame to Proactive Systems</h2>
+      <p>These five human factors are not character flaws; they are predictable outcomes of a complex system. Acknowledging them is the first step.</p>
+      
+      <p>The next, most critical step is to move away from a culture of reactive blame and towards one that proactively builds resilient systems and trains for high performance. Just as aviation did decades ago, the mining industry can achieve the next leap in safety performance by investing in its most critical asset: its people. By equipping them with the non-technical skills to manage these factors, we build leaders at every level and create a workplace where everyone goes home safe, every single day.</p>
+
+      <h2>Ready to Enhance Your Team's Safety Performance?</h2>
+      <p>Our training programs are designed to give your crews the practical skills to manage these human factors effectively.</p>
+      
+      <div class="cta-section">
+        <a href="/#contact" class="cta-primary">Book a No-Obligation Safety Strategy Call</a>
+        <a href="/blog" class="cta-secondary">Download Our Executive Pitch Deck to See the Full Curriculum</a>
+      </div>
+
+      <h2>References</h2>
+      <ol>
+        <li>Patterson, M. & Shappell, S. (2010). Operator-error and system-deficiencies: Analysis of 508 mining incidents and accidents from a human-factors perspective. Based on common findings in safety science literature.</li>
+        <li>Dawson, D. & Reid, K. (1997). Fatigue, alcohol and performance impairment. Nature, 388(6639), 235.</li>
+      </ol>
+    `
+  },
   {
     slug: "aviation-safety-principles-mining",
     title: "Why Aviation Safety Principles Save Lives in Mining",
@@ -21,7 +168,7 @@ export const blogPostsData: BlogPost[] = [
     date: "2025-01-20",
     readTime: "5 min read",
     category: "Safety Leadership",
-    featured: true,
+    featured: false,
     content: `
       <p>The aviation industry has achieved an extraordinary safety record through decades of systematic human factors training and crew resource management (CRM) principles. Mining operations face similar high-stakes environments where human error can have catastrophic consequences.</p>
 

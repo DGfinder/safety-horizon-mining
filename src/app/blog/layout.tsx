@@ -1,19 +1,37 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Mining Safety Insights | Aviation-Proven Safety Training | Crew Resource Mining',
-  description: 'Expert insights on mining safety, human factors training, and industry best practices from airline captains with decades of experience transforming safety cultures.',
-  keywords: 'mining safety insights, aviation CRM blog, crew resource management mining, human factors training, mining safety articles, airline captain safety expertise',
+  title: "Mining Safety Insights | Aviation-Proven Human Factors Training | Crew Resource Mining",
+  description: "Expert insights on mining safety, human factors training, and aviation-proven strategies for Australian mining operations. Learn from airline captains to improve your safety culture.",
+  keywords: "mining safety insights, human factors mining, aviation safety mining, crew resource management, mining safety culture, FIFO safety training, Australian mining safety",
   openGraph: {
-    title: 'Mining Safety Insights from Aviation Experts',
-    description: 'Expert insights on mining safety, human factors training, and industry best practices from airline captains with decades of experience.',
-    type: 'website',
-    url: 'https://crewresourcemining.com.au/blog',
+    title: "Mining Safety Insights | Crew Resource Mining",
+    description: "Expert insights on mining safety, human factors training, and aviation-proven strategies for Australian mining operations.",
+    type: "website",
+    url: "https://crewresourcemining.com.au/blog",
+    siteName: "Crew Resource Mining",
+    locale: "en_AU",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Mining Safety Insights from Aviation Experts',
-    description: 'Expert insights on mining safety, human factors training, and industry best practices from airline captains.',
+    card: "summary_large_image",
+    title: "Mining Safety Insights | Crew Resource Mining",
+    description: "Expert insights on mining safety, human factors training, and aviation-proven strategies for Australian mining operations.",
+    site: "@CrewResourceMining",
+    creator: "@CrewResourceMining",
+  },
+  alternates: {
+    canonical: "https://crewresourcemining.com.au/blog",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
