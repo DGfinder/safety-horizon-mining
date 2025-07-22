@@ -92,7 +92,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
       
       {/* Article Header */}
       <article className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-8">
+        <div className="max-w-3xl mx-auto px-4 md:px-8">
           {/* Breadcrumb */}
           <nav className="mb-8">
             <a href="/blog" className="text-brand-orange-500 hover:text-brand-orange-600 font-medium">
@@ -138,7 +138,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
 
           {/* Article Content */}
           <div 
-            className="prose prose-lg max-w-none prose-headings:text-brand-brown-900 prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-xl prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-3 prose-p:text-brand-brown-600 prose-p:leading-relaxed prose-p:mb-4 prose-ul:text-brand-brown-600 prose-ol:text-brand-brown-600 prose-li:mb-2 prose-strong:text-brand-brown-900"
+            className="prose prose-sm md:prose-base lg:prose-lg max-w-none mx-auto"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
@@ -173,7 +173,7 @@ const BlogPostPage = ({ params }: BlogPostPageProps) => {
 
       {/* Newsletter Signup */}
       <section id="newsletter" className="py-16 bg-brand-brown-900">
-        <div className="max-w-content mx-auto px-8 text-center">
+        <div className="max-w-content mx-auto px-4 md:px-8 text-center">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-brand-white mb-4">
               Get More Safety Insights

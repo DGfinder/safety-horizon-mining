@@ -20,10 +20,20 @@ const Navigation = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    // Check if we're on the homepage
+    const isHomepage = window.location.pathname === '/';
+    
+    if (isHomepage) {
+      // On homepage: scroll to section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // On other pages: navigate to homepage with hash
+      window.location.href = `/#${sectionId}`;
     }
+    
     // Close mobile menu after navigation
     setIsMobileMenuOpen(false);
   };
