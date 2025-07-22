@@ -19,6 +19,121 @@ export interface BlogPost {
 
 export const blogPostsData: BlogPost[] = [
   {
+    slug: "sterile-cockpit-rule-mining-safety",
+    title: "From Cockpit to Haul Truck: How Aviation's \"Sterile Cockpit\" Rule Can Prevent Mining Accidents",
+    excerpt: "Learn how a critical aviation safety rule—the Sterile Cockpit—can be adapted for mining operations to reduce distractions, improve focus, and prevent incidents. A powerful lesson from a 1974 aviation tragedy.",
+    author: "The Crew Resource Mining Team",
+    authorRole: "Aviation Safety Experts",
+    date: "2025-07-22",
+    readTime: "7 min read",
+    category: "Aviation Safety",
+    featured: true,
+    seo: {
+      metaTitle: "How Aviation's \"Sterile Cockpit\" Rule Can Prevent Mining Accidents",
+      metaDescription: "Learn how a critical aviation safety rule—the Sterile Cockpit—can be adapted for mining operations to reduce distractions, improve focus, and prevent incidents.",
+      keywords: [
+        "aviation safety for mining",
+        "crew resource management mining", 
+        "human factors experts",
+        "mining safety procedures",
+        "non-technical skills mining",
+        "sterile cockpit mining",
+        "mining distraction prevention",
+        "situational awareness mining",
+        "aviation mining safety",
+        "mining human factors training"
+      ],
+      canonicalUrl: "https://crewresourcemining.com.au/blog/sterile-cockpit-rule-mining-safety"
+    },
+    content: `
+      <p><strong>On the morning of September 11, 1974, Eastern Air Lines Flight 212 was on its final approach into Charlotte, North Carolina.</strong> In the cockpit, the flight crew was engaged in a casual, meandering conversation about politics and used cars. Distracted by their non-essential chat, they failed to notice their aircraft had descended dangerously low.</p>
+      
+      <p>The plane crashed into a cornfield just a few kilometres from the runway, tragically killing 72 people.</p>
+      
+      <div class="bg-brand-yellow-50 border-l-4 border-brand-orange-500 p-6 my-8">
+        <p class="text-brand-brown-900 font-semibold mb-2">Critical Finding:</p>
+        <p class="text-brand-brown-700">The investigation found that the critical factor was not mechanical failure, but distraction. This preventable tragedy directly led to a landmark regulation in aviation: the Sterile Cockpit Rule.</p>
+      </div>
+      
+      <p>This rule, born from disaster, holds powerful and life-saving lessons for other high-risk industries. <strong>For Australian mining, it offers a proven framework for eliminating one of the most common causes of incidents: distraction during critical tasks.</strong></p>
+
+      <div class="text-center my-8">
+        <a href="/#contact" class="bg-brand-orange-500 text-brand-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-orange-600 transition-colors hover-lift inline-block">Prevent Similar Incidents at Your Site →</a>
+      </div>
+
+      <h2>What is the Sterile Cockpit Rule?</h2>
+      <p>The Sterile Cockpit Rule is simple but strict: <strong>it prohibits flight crews from engaging in any conversation or activity that is not essential to the safe operation of the aircraft during critical phases of flight</strong> (typically below 10,000 feet, including taxi, takeoff, and landing).</p>
+      
+      <p>No chatting about the footy. No discussing weekend plans. No distractions.</p>
+      
+      <p>The purpose is to protect the crew's most valuable resources: their focus and situational awareness. By eliminating non-essential mental clutter, it ensures all their cognitive capacity is dedicated to the task at hand.</p>
+
+      <h2>Translating the "Cockpit" to the Mine Site</h2>
+      <p>The "cockpit" is not just a physical place; it's a concept. It's any environment where the risk is high and the need for focus is absolute. <strong>On a mine site, there are dozens of "cockpits":</strong></p>
+
+      <ul>
+        <li><strong>The Haul Truck Cab:</strong> When operating on a busy ramp, approaching an intersection, or dumping a load.</li>
+        <li><strong>The Maintenance Bay:</strong> During a critical lift, a pressure test, or the final torqueing of components.</li>
+        <li><strong>The Control Room:</strong> While managing a plant start-up, shutdown, or responding to an alarm.</li>
+        <li><strong>The Shotfirer's Zone:</strong> During the final preparation and firing of a blast.</li>
+      </ul>
+      
+      <p>In each of these environments, a single distraction—a non-essential radio call, a casual conversation—can be the first link in an incident chain.</p>
+
+      <div class="bg-brand-brown-50 p-6 rounded-lg my-8">
+        <h3 class="text-brand-brown-900 font-bold mb-3">Real Mining Application</h3>
+        <p class="text-brand-brown-700">Our aviation experts have successfully implemented sterile protocol adaptations at major Australian mining operations, resulting in measurable reductions in distraction-related incidents.</p>
+        <div class="mt-4">
+          <a href="/#contact" class="text-brand-orange-500 font-semibold hover:text-brand-orange-600">See how this works at your operation →</a>
+        </div>
+      </div>
+
+      <h2>How a "Sterile Protocol" Prevents Mining Errors</h2>
+      <p>Adopting a "sterile protocol" mindset during critical tasks directly counters some of the most common human factors failures seen in mining:</p>
+
+      <h3>It Prevents Distraction</h3>
+      <p>A sterile protocol silences non-essential radio chatter, preventing an operator from missing a critical call from a spotter or another vehicle.</p>
+
+      <h3>It Sharpens Situational Awareness</h3>
+      <p>By forcing crews to focus only on the task, it increases their capacity to notice small changes in their environment—an unexpected noise, a slight movement, a warning light—before they escalate.</p>
+
+      <h3>It Reduces Errors of Omission</h3>
+      <p>When a team is not distracted, they are far less likely to forget a crucial step in a procedure, like confirming an isolation or completing a final check.</p>
+      
+      <p><strong>Implementing this isn't about enforcing total silence.</strong> It's about instilling the discipline to consciously defer all non-essential communication until the critical, high-risk phase of the task is complete.</p>
+
+      <h2>Beyond One Rule: A System of Safety Behaviours</h2>
+      <p>The Sterile Cockpit Rule is a powerful example of how proven aviation safety principles can be directly and effectively applied to mining operations. It's just one of many tools—including Threat and Error Management (TEM), closed-loop communication, and assertive communication strategies—that form the basis of a robust Crew Resource Management program.</p>
+      
+      <p><strong>These aren't abstract theories. They are practical, life-saving behaviours forged in one of the world's most demanding industries.</strong> By bringing this discipline from the flight deck to the mine site, we equip teams with the skills to manage risk proactively.</p>
+
+      <div class="bg-brand-orange-50 border border-brand-orange-200 p-6 rounded-lg my-8">
+        <h3 class="text-brand-brown-900 font-bold mb-3">Why Choose Former Airline Captains?</h3>
+        <p class="text-brand-brown-700 mb-4">Our team of former airline captains and human factors experts have lived these principles under the most demanding conditions. We don't just teach theory—we bring real-world aviation experience to your mining operation.</p>
+        <a href="/#contact" class="bg-brand-orange-500 text-brand-white px-6 py-2 rounded-lg font-semibold hover:bg-brand-orange-600 transition-colors inline-block">Speak with Our Aviation Experts</a>
+      </div>
+
+      <h2>Conclusion: It's Time to Protect Your Focus</h2>
+      <p>Your team's attention is their most valuable safety tool. In high-consequence environments, it needs to be protected with the same rigour we use to maintain our most critical equipment.</p>
+      
+      <p><strong>Adopting the principles behind the Sterile Cockpit Rule is a powerful step towards building a culture where focus is valued, distractions are managed, and safety is the result of disciplined, professional practice.</strong></p>
+
+      <h2>Ready to Bring Aviation-Grade Safety Discipline to Your Site?</h2>
+      <p>See how we adapt proven aviation principles for your specific mining operation. Our former airline captains and human factors experts are ready to help you implement these life-saving protocols.</p>
+      
+      <div class="text-center my-8">
+        <a href="/#contact" class="bg-brand-orange-500 text-brand-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-brand-orange-600 transition-colors hover-lift inline-block">Book a No-Obligation Safety Strategy Call</a>
+        <p class="text-brand-brown-600 text-sm mt-3">Speak directly with former airline captains about your safety challenges</p>
+      </div>
+
+      <h2>References</h2>
+      <ol>
+        <li>NTSB. (1975). Aircraft Accident Report: Eastern Air Lines, Inc., Douglas DC-9-31, N8984E, Charlotte, North Carolina, September 11, 1974. (NTSB-AAR-75-9). National Transportation Safety Board.</li>
+        <li>FAA. (1981). Part 121: Operating Requirements: Domestic, Flag, and Supplemental Operations. § 121.542 Flight crewmember duties. Federal Aviation Administration.</li>
+      </ol>
+    `
+  },
+  {
     slug: "top-5-human-factors-mining-incidents",
     title: "The Top 5 Human Factors That Lead to Mining Incidents (And How to Fix Them)",
     excerpt: "A deep dive into the 5 most common human factors that lead to mining incidents, including fatigue and communication failures. Learn practical, proven strategies to enhance safety and performance on your site.",
@@ -27,7 +142,7 @@ export const blogPostsData: BlogPost[] = [
     date: "2025-07-22",
     readTime: "8 min read",
     category: "Human Factors",
-    featured: true,
+    featured: false,
     seo: {
       metaTitle: "The Top 5 Human Factors in Mining Incidents & How to Fix Them",
       metaDescription: "A deep dive into the 5 most common human factors that lead to mining incidents, including fatigue and communication failures. Learn practical, proven strategies to enhance safety and performance on your site.",
