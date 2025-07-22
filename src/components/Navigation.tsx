@@ -91,7 +91,7 @@ const Navigation = () => {
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-brand-white z-40">
+        <div className="md:hidden fixed inset-0 top-16 bg-brand-white/95 backdrop-blur-sm min-h-screen z-50">
           <div className="flex flex-col items-center py-8 space-y-6">
             <button 
               onClick={() => scrollToSection('problem')}
