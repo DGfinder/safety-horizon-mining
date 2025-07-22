@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,6 +45,21 @@ export async function POST(request: NextRequest) {
       company: 'Test Company',
       message: 'This is a test email to verify the email system is working correctly.'
     };
+
+    // Check if Resend is initialized
+    if (!resend) {
+      return NextResponse.json({
+        success: false,
+        error: 'Email service not configured - missing RESEND_API_KEY',
+        config: {
+          from: fromEmail,
+          to: toEmail,
+          cc: ccEmail,
+          hasApiKey: false,
+          timestamp: new Date().toISOString()
+        }
+      }, { status: 500 });
+    }
 
     // Send test email
     const emailResult = await resend.emails.send({
