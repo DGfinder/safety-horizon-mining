@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Lock, PlayCircle, Trophy, Calendar, AlertCircle } from 'lucide-react'
 import LMSLayout from '@/components/lms/LMSLayout'
+import Breadcrumbs from '@/components/lms/Breadcrumbs'
+import ContinueLearningCard from '@/components/lms/ContinueLearningCard'
+import FloatingNextModule from '@/components/lms/FloatingNextModule'
+import QuickStatsWidget from '@/components/lms/QuickStatsWidget'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import PerformanceDashboard from '@/components/visualizations/PerformanceDashboard'
@@ -126,14 +130,41 @@ export default async function DashboardPage() {
     modules,
   }
 
+  // Find current incomplete module for Continue Learning card
+  const currentModule = modules.find(m => m.orderIndex === enrollment.currentModuleIndex && !m.passed)
+  const nextModule = modules.find(m => m.orderIndex === (enrollment.currentModuleIndex || 0) + 1 && !m.isLocked)
+
   return (
     <LMSLayout user={user} enrollmentData={enrollmentData}>
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Welcome Header */}
+        {/* 🎯 ABOVE THE FOLD - Most Important */}
+
+        {/* Continue Learning Card - PRIMARY ACTION */}
+        {currentModule && currentModule.scenarioId && (
+          <div className="mb-6">
+            <ContinueLearningCard
+              moduleTitle={currentModule.title}
+              moduleNumber={currentModule.orderIndex}
+              scenarioId={currentModule.scenarioId}
+              moduleId={currentModule.id}
+              progress={0}
+            />
+          </div>
+        )}
+
+        {/* Quick Stats - AT-A-GLANCE METRICS */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#192135]">Welcome back, {user.name?.split(' ')[0]}!</h1>
-          <p className="text-slate-600 mt-1">Continue your safety training journey</p>
+          <QuickStatsWidget
+            progressPercent={progressPercent}
+            completedModules={completedModules}
+            totalModules={totalModules}
+            avgScore={avgScore}
+            certificateExpiryDays={certificateExpiryDays}
+          />
         </div>
+
+        {/* 📊 BELOW THE FOLD - Detailed Information */}
+
         {/* Certification Status */}
         <Card className="mb-8 border-l-4 border-l-[#EC5C29]">
           <CardHeader>
@@ -352,6 +383,16 @@ export default async function DashboardPage() {
           </Card>
         )}
       </div>
+
+      {/* Floating Next Module Button */}
+      {nextModule && nextModule.scenarioId && (
+        <FloatingNextModule
+          moduleTitle={nextModule.title}
+          moduleNumber={nextModule.orderIndex}
+          scenarioId={nextModule.scenarioId}
+          moduleId={nextModule.id}
+        />
+      )}
     </LMSLayout>
   )
 }

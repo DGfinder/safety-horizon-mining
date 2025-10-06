@@ -1,4 +1,5 @@
 import { PrismaClient, NodeType, ScenarioStatus, Difficulty, ModuleKind } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -44,12 +45,18 @@ async function main() {
   // 2. Create Users
   // ============================================================================
 
+  // Hash the demo password
+  const hashedPassword = await bcrypt.hash('demo123', 10)
+
   const learner = await prisma.user.upsert({
     where: { email: 'wayne@pilotmine.com.au' },
-    update: {},
+    update: {
+      password: hashedPassword,
+    },
     create: {
       email: 'wayne@pilotmine.com.au',
       name: 'Wayne Bowron',
+      password: hashedPassword,
       orgId: org.id,
       role: 'LEARNER',
     },
@@ -57,15 +64,18 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@pilotmine.com.au' },
-    update: {},
+    update: {
+      password: hashedPassword,
+    },
     create: {
       email: 'admin@pilotmine.com.au',
       name: 'Admin User',
+      password: hashedPassword,
       orgId: org.id,
       role: 'ADMIN',
     },
   })
-  console.log('✅ Created users:', learner.name, admin.name)
+  console.log('✅ Created/updated users:', learner.name, admin.name)
 
   // ============================================================================
   // 3. Create Course

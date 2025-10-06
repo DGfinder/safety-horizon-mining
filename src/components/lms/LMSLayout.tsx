@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode, useState } from 'react'
+import LMSHeader from './LMSHeader'
 import LMSSidebar from './LMSSidebar'
 import { Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -39,20 +40,28 @@ export default function LMSLayout({ children, user, enrollmentData }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
-      {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-[#192135] text-white p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white hover:bg-white/10"
-          >
-            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </Button>
-          <h1 className="font-bold text-lg">Safety Horizon</h1>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex flex-col">
+      {/* Top Header */}
+      <LMSHeader
+        user={user}
+        progressPercent={enrollmentData?.progressPercent}
+        notificationCount={0}
+        onSearchClick={() => {
+          // TODO: Implement global search modal
+          console.log('Search clicked')
+        }}
+      />
+
+      {/* Mobile Sidebar Toggle (shows when sidebar is hidden) */}
+      <div className="lg:hidden fixed bottom-4 left-4 z-50">
+        <Button
+          variant="default"
+          size="icon"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="bg-[#EC5C29] hover:bg-[#EC5C29]/90 text-white w-12 h-12 rounded-full shadow-lg"
+        >
+          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </Button>
       </div>
 
       {/* Mobile overlay */}
@@ -63,24 +72,25 @@ export default function LMSLayout({ children, user, enrollmentData }: Props) {
         />
       )}
 
-      <div className="flex">
+      {/* Main Layout: Sidebar + Content */}
+      <div className="flex flex-1">
         {/* Sidebar */}
-        <div
+        <aside
           className={`
-            fixed lg:sticky top-0 h-screen z-40 lg:z-0
+            fixed lg:sticky top-16 z-40 lg:z-0
+            h-[calc(100vh-4rem)]
             transition-transform duration-300 ease-in-out
             ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
           `}
         >
           <LMSSidebar
-            user={user}
             enrollmentData={enrollmentData}
             onNavigate={() => setSidebarOpen(false)}
           />
-        </div>
+        </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 w-full lg:w-auto pt-16 lg:pt-0">
+        {/* Main Content Area */}
+        <main className="flex-1 min-w-0 overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100">
           {children}
         </main>
       </div>

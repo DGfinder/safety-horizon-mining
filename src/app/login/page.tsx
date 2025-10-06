@@ -49,11 +49,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo/Branding */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-[#EC5C29] mb-4">
-            <Shield className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Safety Horizon LMS</h1>
-          <p className="text-slate-400">Mining Training Portal</p>
+          <img src="/img/logo.svg" alt="Crew Resource Mining logo" className="h-16 w-auto mx-auto mb-4" />
+          <h1 className="text-3xl font-bold text-white mb-2">Crew Resource Mining</h1>
+          <p className="text-slate-400">Learning Management System</p>
         </div>
 
         {/* Login Card */}
@@ -160,7 +158,7 @@ export default function LoginPage() {
         {/* Security Notice */}
         <div className="mt-8 text-center text-xs text-slate-500">
           <p>Protected by industry-standard encryption</p>
-          <p className="mt-1">© 2025 Safety Horizon Mining. All rights reserved.</p>
+          <p className="mt-1">© 2024 TSA Global Consultants. All rights reserved.</p>
         </div>
       </div>
     </div>

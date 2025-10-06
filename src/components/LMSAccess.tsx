@@ -80,7 +80,7 @@ const LMSAccess = () => {
 
                   <div className="text-center">
                     <p className="text-sm text-white/80">
-                      New to Safety Horizon?{' '}
+                      New to Crew Resource Mining?{' '}
                       <a href="#contact" className="font-semibold underline hover:text-white">
                         Contact us for access
                       </a>
