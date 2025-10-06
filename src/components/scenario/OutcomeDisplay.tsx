@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Trophy, RotateCcw, Home, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
+import ImpactAnalysis from './ImpactAnalysis'
+import KPIImpactMeter from './KPIImpactMeter'
 
 type Props = {
   node: {
@@ -129,24 +131,71 @@ export default function OutcomeDisplay({
         </CardContent>
       </Card>
 
-      {/* KPI Results (qualitative) */}
-      {kpiResults && (
-        <Card className="bg-white/10 border-white/20 mb-8">
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Assessment</h3>
-            <div className="space-y-2">
-              {Object.entries(kpiResults).map(([kpi, result]) => (
-                <div key={kpi} className="flex justify-between items-center">
-                  <span className="text-white/80 capitalize">{kpi.replace('_', ' ')}</span>
-                  <Badge variant={result.includes('Excellent') || result.includes('Strong') ? 'default' : 'secondary'}>
-                    {result}
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Professional Impact Analysis */}
+      <div className="mb-8">
+        <ImpactAnalysis
+          title="Decision Impact Summary"
+          description="Analysis of key operational metrics affected by your decisions"
+          metrics={[
+            {
+              label: 'Safety Incidents',
+              before: 3,
+              after: passed ? 0 : 2,
+              change: passed ? -100 : -33,
+              impact: passed ? 'positive' : 'positive',
+              unit: 'incidents',
+            },
+            {
+              label: 'Production Rate',
+              before: 850,
+              after: passed ? 920 : 800,
+              change: passed ? 8 : -6,
+              impact: passed ? 'positive' : 'negative',
+              unit: 't/hr',
+            },
+            {
+              label: 'Equipment Utilization',
+              before: 75,
+              after: passed ? 88 : 70,
+              change: passed ? 17 : -7,
+              impact: passed ? 'positive' : 'negative',
+              unit: '%',
+            },
+            {
+              label: 'Crew Morale',
+              before: 70,
+              after: passed ? 85 : 68,
+              change: passed ? 21 : -3,
+              impact: passed ? 'positive' : 'negative',
+              unit: '%',
+            },
+          ]}
+          overallAssessment={
+            passed
+              ? totalScore >= 90
+                ? 'excellent'
+                : 'good'
+              : totalScore >= 60
+              ? 'acceptable'
+              : 'poor'
+          }
+        />
+      </div>
+
+      {/* KPI Impact Meters */}
+      <div className="mb-8">
+        <KPIImpactMeter
+          title="Key Performance Indicators"
+          kpis={Object.entries(kpiScores).map(([name, currentValue]) => ({
+            name: name.replace('_', ' '),
+            currentValue,
+            targetValue: 100,
+            impact: passed ? (currentValue >= 90 ? 15 : 8) : currentValue >= 70 ? 5 : -10,
+            unit: '%',
+            description: `${name.replace('_', ' ')} performance metric`,
+          }))}
+        />
+      </div>
 
       {/* Key Lessons */}
       {lessons && lessons.length > 0 && (

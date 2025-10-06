@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Check } from 'lucide-react'
+import DecisionHUD from './DecisionHUD'
 
 type Choice = {
   id: string
@@ -53,15 +54,20 @@ export default function DecisionMCQ({ node, onDecision }: Props) {
 
   const selectedChoice = selectedId ? choices.find((c) => c.id === selectedId) : null
 
+  // Sample decision context (in production, this would come from scenario metadata)
+  const decisionContext = {
+    timeRemaining: '10 minutes',
+    personnelAffected: 8,
+    currentRiskLevel: 'medium' as const,
+    kpiAtRisk: kpiFocus,
+    situationSummary: 'Critical decision point: Your choice will directly impact operational safety and efficiency.',
+  }
+
   return (
     <div className="p-8 md:p-12">
-      {/* KPI Focus */}
-      <div className="flex gap-2 mb-6">
-        {kpiFocus.map((kpi) => (
-          <Badge key={kpi} variant="outline" className="text-white border-white/30">
-            {kpi.replace('_', ' ')}
-          </Badge>
-        ))}
+      {/* Decision HUD */}
+      <div className="mb-6">
+        <DecisionHUD context={decisionContext} />
       </div>
 
       {/* Question */}
