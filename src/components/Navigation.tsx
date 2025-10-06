@@ -73,13 +73,19 @@ const Navigation = () => {
           >
             About TSA
           </button>
-          <a 
+          <a
             href="/blog"
             className="text-sm font-medium hover:opacity-70 transition-opacity"
           >
             Insights
           </a>
-          <button 
+          <a
+            href="/lms"
+            className="text-sm font-medium hover:opacity-70 transition-opacity"
+          >
+            LMS Portal
+          </a>
+          <button
             onClick={() => scrollToSection('contact')}
             className="bg-brand-orange-500 text-brand-white px-6 py-2 rounded-sm font-medium hover:bg-brand-orange-600 transition-all duration-300 hover-lift"
           >
@@ -127,14 +133,21 @@ const Navigation = () => {
             >
               About TSA
             </button>
-            <a 
+            <a
               href="/blog"
               onClick={() => setIsMobileMenuOpen(false)}
               className="text-lg font-medium text-brand-brown-900 hover:text-brand-orange-500 transition-colors py-2"
             >
               Insights
             </a>
-            <button 
+            <a
+              href="/lms"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-lg font-medium text-brand-brown-900 hover:text-brand-orange-500 transition-colors py-2"
+            >
+              LMS Portal
+            </a>
+            <button
               onClick={() => scrollToSection('contact')}
               className="bg-brand-orange-500 text-brand-white px-8 py-3 rounded-sm font-medium hover:bg-brand-orange-600 transition-all duration-300 hover-lift mt-4"
             >

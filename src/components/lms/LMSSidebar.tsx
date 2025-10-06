@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, BookOpen, Award, HelpCircle, FileText } from 'lucide-react'
+import { Home, BookOpen, Award, HelpCircle, FileText, LogOut } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import CircularProgress from './CircularProgress'
 import ModuleTree from './ModuleTree'
+import { signOut } from 'next-auth/react'
 
 type Props = {
   user?: {
@@ -159,6 +160,14 @@ export default function LMSSidebar({ user, enrollmentData, onNavigate }: Props) 
         >
           <HelpCircle className="w-4 h-4" />
           <span className="text-sm">Help & Resources</span>
+        </button>
+
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-900/30 text-slate-300 hover:text-red-400 transition-colors border-t border-white/10 mt-2 pt-4"
+        >
+          <LogOut className="w-4 h-4" />
+          <span className="text-sm">Logout</span>
         </button>
       </div>
     </div>

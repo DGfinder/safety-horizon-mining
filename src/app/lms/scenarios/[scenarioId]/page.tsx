@@ -1,13 +1,17 @@
 import { Suspense } from 'react'
 import { prisma } from '@/lib/db'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import ScenarioPlayer from '@/components/scenario/ScenarioPlayer'
 import LMSLayout from '@/components/lms/LMSLayout'
-
-// For MVP, hardcode user
-const DEMO_USER_EMAIL = 'wayne@pilotmine.com.au'
+import { auth } from '@/auth'
 
 async function getScenarioData(scenarioId: string, moduleId?: string) {
+  // Get authenticated session
+  const session = await auth()
+  if (!session?.user?.id) {
+    redirect('/login')
+  }
+
   const scenario = await prisma.scenario.findUnique({
     where: { id: scenarioId },
     include: {
@@ -20,7 +24,7 @@ async function getScenarioData(scenarioId: string, moduleId?: string) {
   if (!scenario) notFound()
 
   const user = await prisma.user.findUnique({
-    where: { email: DEMO_USER_EMAIL },
+    where: { id: session.user.id },
     include: {
       org: {
         include: {

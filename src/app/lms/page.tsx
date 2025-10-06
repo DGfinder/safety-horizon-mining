@@ -6,14 +6,23 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Lock, PlayCircle, Trophy, Calendar, AlertCircle } from 'lucide-react'
 import LMSLayout from '@/components/lms/LMSLayout'
-
-// For MVP, hardcode user (later will use NextAuth session)
-const DEMO_USER_EMAIL = 'wayne@pilotmine.com.au'
+import { auth } from '@/auth'
+import { redirect } from 'next/navigation'
+import PerformanceDashboard from '@/components/visualizations/PerformanceDashboard'
+import SafetyMetrics from '@/components/visualizations/SafetyMetrics'
+import TrainingJourney from '@/components/visualizations/TrainingJourney'
+import KPIRadar from '@/components/visualizations/KPIRadar'
 
 async function getDashboardData() {
+  // Get authenticated session
+  const session = await auth()
+  if (!session?.user?.id) {
+    redirect('/login')
+  }
+
   // Get user
   const user = await prisma.user.findUnique({
-    where: { email: DEMO_USER_EMAIL },
+    where: { id: session.user.id },
     include: {
       org: {
         include: {
@@ -82,6 +91,12 @@ async function getDashboardData() {
     }
   })
 
+  // Calculate average score for visualizations
+  const passedAttempts = enrollment.moduleAttempts.filter((a) => a.passed && a.score !== null)
+  const avgScore = passedAttempts.length > 0
+    ? Math.round(passedAttempts.reduce((sum, a) => sum + (a.score || 0), 0) / passedAttempts.length)
+    : 0
+
   return {
     user,
     enrollment,
@@ -90,12 +105,13 @@ async function getDashboardData() {
     progressPercent,
     certificateExpiryDays,
     modules,
+    avgScore,
   }
 }
 
 export default async function DashboardPage() {
   const data = await getDashboardData()
-  const { user, enrollment, totalModules, completedModules, progressPercent, certificateExpiryDays, modules } = data
+  const { user, enrollment, totalModules, completedModules, progressPercent, certificateExpiryDays, modules, avgScore } = data
 
   const activeCert = enrollment.certificates[0]
   const daysUntilExpiry = certificateExpiryDays
@@ -191,6 +207,42 @@ export default async function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Safety Metrics */}
+        <div className="mb-8">
+          <SafetyMetrics
+            completedModules={completedModules}
+            totalModules={totalModules}
+            avgScore={avgScore}
+            certificateExpiryDays={certificateExpiryDays}
+          />
+        </div>
+
+        {/* Performance Dashboard and Training Journey */}
+        <div className="grid gap-8 lg:grid-cols-2 mb-8">
+          <TrainingJourney
+            modules={modules}
+            currentModuleIndex={enrollment.currentModuleIndex}
+            completedModules={completedModules}
+            totalModules={totalModules}
+          />
+          <KPIRadar
+            avgScore={avgScore}
+            completedModules={completedModules}
+            totalModules={totalModules}
+          />
+        </div>
+
+        {/* Performance Charts */}
+        {enrollment.moduleAttempts.length > 0 && (
+          <div className="mb-8">
+            <PerformanceDashboard
+              data={{
+                moduleAttempts: enrollment.moduleAttempts
+              }}
+            />
+          </div>
+        )}
 
         {/* Module List */}
         <div className="space-y-6">

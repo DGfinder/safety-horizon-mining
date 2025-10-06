@@ -7,6 +7,7 @@ import Solution from '@/components/Solution';
 import WhyAviation from '@/components/WhyAviation';
 import Curriculum from '@/components/Curriculum';
 import Outcomes from '@/components/Outcomes';
+import LMSAccess from '@/components/LMSAccess';
 import SocialProof from '@/components/SocialProof';
 import About from '@/components/About';
 import Process from '@/components/Process';
@@ -24,6 +25,7 @@ export default function Home() {
       <WhyAviation />
       <Curriculum />
       <Outcomes />
+      <LMSAccess />
       <SocialProof />
       <About />
       <Process />
