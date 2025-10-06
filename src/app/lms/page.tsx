@@ -1,0 +1,281 @@
+import { Suspense } from 'react'
+import { prisma } from '@/lib/db'
+import Link from 'next/link'
+import { Progress } from '@/components/ui/progress'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { CheckCircle2, Lock, PlayCircle, Trophy, Calendar, AlertCircle } from 'lucide-react'
+
+// For MVP, hardcode user (later will use NextAuth session)
+const DEMO_USER_EMAIL = 'wayne@pilotmine.com.au'
+
+async function getDashboardData() {
+  // Get user
+  const user = await prisma.user.findUnique({
+    where: { email: DEMO_USER_EMAIL },
+    include: {
+      org: {
+        include: {
+          settings: true,
+        },
+      },
+    },
+  })
+
+  if (!user) throw new Error('User not found')
+
+  // Get enrollment
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { userId: user.id },
+    include: {
+      course: {
+        include: {
+          modules: {
+            orderBy: { orderIndex: 'asc' },
+          },
+        },
+      },
+      moduleAttempts: {
+        include: {
+          module: true,
+        },
+      },
+      certificates: {
+        where: { isActive: true },
+        orderBy: { issuedAt: 'desc' },
+        take: 1,
+      },
+    },
+  })
+
+  if (!enrollment) throw new Error('No enrollment found')
+
+  // Calculate progress
+  const totalModules = enrollment.course.modules.length
+  const completedModules = enrollment.moduleAttempts.filter((a) => a.passed).length
+  const progressPercent = Math.round((completedModules / totalModules) * 100)
+
+  return {
+    user,
+    enrollment,
+    totalModules,
+    completedModules,
+    progressPercent,
+  }
+}
+
+export default async function DashboardPage() {
+  const data = await getDashboardData()
+  const { user, enrollment, totalModules, completedModules, progressPercent } = data
+
+  const activeCert = enrollment.certificates[0]
+  const daysUntilExpiry = activeCert
+    ? Math.ceil((new Date(activeCert.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+      {/* Header */}
+      <div className="bg-[#192135] text-white py-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Welcome back, {user.name?.split(' ')[0]}!</h1>
+              <p className="text-slate-300 mt-1">{user.org?.name}</p>
+            </div>
+            <Link
+              href="/"
+              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition"
+            >
+              Home
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Certification Status */}
+        <Card className="mb-8 border-l-4 border-l-[#EC5C29]">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-[#EC5C29]" />
+                  Certification Status
+                </CardTitle>
+                {activeCert ? (
+                  <CardDescription className="mt-2">
+                    {daysUntilExpiry && daysUntilExpiry > 30 ? (
+                      <span className="flex items-center gap-2 text-green-600">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Current until {new Date(activeCert.expiresAt).toLocaleDateString()}
+                      </span>
+                    ) : daysUntilExpiry && daysUntilExpiry > 0 ? (
+                      <span className="flex items-center gap-2 text-amber-600">
+                        <AlertCircle className="w-4 h-4" />
+                        Expires in {daysUntilExpiry} days - Recertification required
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2 text-red-600">
+                        <AlertCircle className="w-4 h-4" />
+                        Expired - Recertification required
+                      </span>
+                    )}
+                  </CardDescription>
+                ) : (
+                  <CardDescription className="mt-2 text-amber-600">
+                    Complete all modules to earn your certificate
+                  </CardDescription>
+                )}
+              </div>
+              {activeCert && (
+                <Link
+                  href={`/certificates/${activeCert.serial}`}
+                  className="px-4 py-2 bg-[#192135] text-white rounded-lg hover:bg-[#192135]/90 transition"
+                >
+                  View Certificate
+                </Link>
+              )}
+            </div>
+          </CardHeader>
+        </Card>
+
+        {/* Overall Progress */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>{enrollment.course.title}</CardTitle>
+            <CardDescription>{enrollment.course.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium">
+                    {completedModules} of {totalModules} modules completed
+                  </span>
+                  <span className="text-sm font-semibold">{progressPercent}%</span>
+                </div>
+                <Progress value={progressPercent} className="h-3" />
+              </div>
+
+              {enrollment.dueAt && (
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <Calendar className="w-4 h-4" />
+                  Due: {new Date(enrollment.dueAt).toLocaleDateString()}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Module List */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold">Course Modules</h2>
+
+          <div className="grid gap-4">
+            {enrollment.course.modules.map((module) => {
+              const attempt = enrollment.moduleAttempts.find((a) => a.moduleId === module.id)
+              const isCompleted = attempt?.passed
+              const isInProgress = attempt && !attempt.passed
+              const isLocked =
+                user.org?.settings?.requireSequential &&
+                module.orderIndex > (enrollment.currentModuleIndex || 1)
+
+              return (
+                <Card
+                  key={module.id}
+                  className={`${
+                    isCompleted ? 'border-green-200 bg-green-50/50' : ''
+                  } ${isLocked ? 'opacity-60' : ''}`}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-4 flex-1">
+                        {/* Status Icon */}
+                        <div className="mt-1">
+                          {isCompleted ? (
+                            <CheckCircle2 className="w-6 h-6 text-green-600" />
+                          ) : isLocked ? (
+                            <Lock className="w-6 h-6 text-slate-400" />
+                          ) : (
+                            <PlayCircle className="w-6 h-6 text-[#EC5C29]" />
+                          )}
+                        </div>
+
+                        {/* Module Info */}
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <Badge variant="outline">Module {module.orderIndex}</Badge>
+                            {isCompleted && attempt && (
+                              <Badge variant="default" className="bg-green-600">
+                                Score: {attempt.score}%
+                              </Badge>
+                            )}
+                          </div>
+                          <h3 className="text-lg font-semibold mb-1">{module.title}</h3>
+                          <p className="text-sm text-slate-600">{module.description}</p>
+
+                          {isInProgress && (
+                            <p className="text-sm text-amber-600 mt-2">In progress - retry to improve your score</p>
+                          )}
+
+                          {isLocked && (
+                            <p className="text-sm text-slate-500 mt-2">
+                              Complete Module {module.orderIndex - 1} to unlock
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div>
+                        {isCompleted ? (
+                          <Link
+                            href={`/lms/scenarios/${module.scenarioId}?moduleId=${module.id}`}
+                            className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition text-sm"
+                          >
+                            Review
+                          </Link>
+                        ) : isLocked ? (
+                          <button
+                            disabled
+                            className="px-4 py-2 bg-slate-200 text-slate-400 rounded-lg cursor-not-allowed text-sm"
+                          >
+                            Locked
+                          </button>
+                        ) : (
+                          <Link
+                            href={`/lms/scenarios/${module.scenarioId}?moduleId=${module.id}`}
+                            className="px-4 py-2 bg-[#EC5C29] text-white rounded-lg hover:bg-[#EC5C29]/90 transition text-sm font-semibold"
+                          >
+                            {isInProgress ? 'Retry' : 'Start'}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Footer CTA */}
+        {completedModules === totalModules && !activeCert && (
+          <Card className="mt-8 border-[#EC5C29] bg-gradient-to-r from-[#EC5C29]/10 to-[#EC5C29]/5">
+            <CardContent className="p-8 text-center">
+              <Trophy className="w-16 h-16 text-[#EC5C29] mx-auto mb-4" />
+              <h3 className="text-2xl font-bold mb-2">Congratulations!</h3>
+              <p className="text-slate-600 mb-6">
+                You've completed all modules. Your certificate is being generated.
+              </p>
+              <button className="px-6 py-3 bg-[#192135] text-white rounded-lg hover:bg-[#192135]/90 transition font-semibold">
+                Download Certificate
+              </button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
+  )
+}

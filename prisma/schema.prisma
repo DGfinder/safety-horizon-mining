@@ -1,0 +1,394 @@
+// CRMS - Crew Resource Mining LMS Database Schema
+// No AI integration - Pre-scored assessments
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ============================================================================
+// ORGANIZATION & USERS
+// ============================================================================
+
+model Org {
+  id        String    @id @default(uuid())
+  name      String
+  region    String?
+  settings  OrgSettings?
+  users     User[]
+  courses   Course[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("orgs")
+}
+
+model OrgSettings {
+  id        String  @id @default(uuid())
+  org       Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId     String  @unique
+
+  // Compliance settings
+  certValidityMonths    Int      @default(12) // 6 or 12
+  reminderDaysBefore    Int[]    @default([30, 14, 7])
+  requireSequential     Boolean  @default(true) // Must complete Module 1 before 2
+
+  // Gamification toggles
+  gamificationEnabled   Boolean  @default(false)
+  leaderboardEnabled    Boolean  @default(false)
+  badgesEnabled         Boolean  @default(false)
+  teamChallengesEnabled Boolean  @default(false)
+
+  // Branding
+  primaryColor String? @default("#EC5C29")
+  logoUrl      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("org_settings")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  org       Org?     @relation(fields: [orgId], references: [id])
+  orgId     String?
+  role      Role     @default(LEARNER)
+
+  enrollments Enrollment[]
+  attempts    Attempt[]
+  profile     UserProfile?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  LEARNER
+  SUPERVISOR
+  ADMIN
+}
+
+// ============================================================================
+// COURSE STRUCTURE
+// ============================================================================
+
+model Course {
+  id    String  @id @default(uuid())
+  org   Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId String
+
+  slug        String       @unique
+  title       String       @default("Crew Resource Management for Mining")
+  description String?
+  status      CourseStatus @default(PUBLISHED)
+
+  modules     Module[]
+  enrollments Enrollment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("courses")
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Module {
+  id         String @id @default(uuid())
+  course     Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId   String
+
+  orderIndex  Int    // 1-12
+  title       String // e.g., "Foundations of HF & Safety Culture"
+  description String
+  kind        ModuleKind @default(SCENARIO)
+
+  // Content references
+  scenarioId   String? // Links to Scenario table
+  videoUrl     String?
+  policyDocUrl String?
+  quizData     Json?   // For non-scenario quizzes
+
+  // Requirements
+  required      Boolean @default(true)
+  passingScore  Int     @default(70) // Percentage
+
+  attempts ModuleAttempt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([courseId, orderIndex])
+  @@map("modules")
+}
+
+enum ModuleKind {
+  SCENARIO
+  VIDEO
+  POLICY
+  QUIZ
+}
+
+// ============================================================================
+// ENROLLMENTS & COMPLIANCE
+// ============================================================================
+
+model Enrollment {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId String
+
+  status     EnrollmentStatus @default(ENROLLED)
+  enrolledAt DateTime         @default(now())
+  dueAt      DateTime?        // Admin-set deadline
+  startedAt  DateTime?
+  completedAt DateTime?
+
+  // Progress tracking
+  currentModuleIndex Int @default(1)
+
+  moduleAttempts ModuleAttempt[]
+  certificates   Certificate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+enum EnrollmentStatus {
+  ENROLLED      // Not started yet
+  IN_PROGRESS   // Started at least 1 module
+  COMPLETED     // All modules passed
+  OVERDUE       // Past dueAt
+  RECERTIFYING  // Within 30 days of cert expiry
+}
+
+model ModuleAttempt {
+  id           String     @id @default(uuid())
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId String
+  module       Module     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  moduleId     String
+
+  attemptNumber Int                 @default(1) // Track retakes
+  status        ModuleAttemptStatus @default(STARTED)
+  score         Int?                // 0-100
+  kpiScores     Json?               // { communication: 85, situational_awareness: 72, ... }
+  passed        Boolean?
+
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+
+  // Link to actual scenario attempt
+  scenarioAttemptId String? // FK to Attempt table
+
+  // Pre-written feedback (no AI)
+  feedback String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("module_attempts")
+}
+
+enum ModuleAttemptStatus {
+  STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+// ============================================================================
+// CERTIFICATES
+// ============================================================================
+
+model Certificate {
+  id           String     @id @default(uuid())
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId String
+
+  serial           String   @unique // CRM-2025-00001234
+  verificationCode String   @unique // For QR code
+
+  issuedAt  DateTime  @default(now())
+  expiresAt DateTime  // issuedAt + certValidityMonths
+
+  // Compliance tracking
+  isActive      Boolean   @default(true)
+  revokedAt     DateTime?
+  revokedReason String?
+
+  // PDF generation
+  pdfUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("certificates")
+}
+
+// ============================================================================
+// SCENARIO SYSTEM (No AI)
+// ============================================================================
+
+model Scenario {
+  id    String @id @default(uuid())
+  slug  String @unique
+  title String
+
+  moduleNumber Int?     // Links to which module (1-12)
+  version      Int      @default(1)
+  status       ScenarioStatus @default(DRAFT)
+
+  // Metadata
+  estimatedMinutes Int        @default(8)
+  difficulty       Difficulty @default(INTERMEDIATE)
+  kpiFocus         String[]   // ["communication", "situational_awareness"]
+
+  nodes    ScenarioNode[]
+  attempts Attempt[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("scenarios")
+}
+
+enum ScenarioStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model ScenarioNode {
+  id         String   @id @default(uuid())
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  scenarioId String
+
+  nodeKey  String   // "n1", "d1", "o_success"
+  nodeType NodeType
+  body     Json     // Full node data (dialogue, choices, media, etc.)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([scenarioId, nodeKey])
+  @@map("scenario_nodes")
+}
+
+enum NodeType {
+  NARRATIVE // Story display
+  DECISION  // MCQ or free-text
+  OUTCOME   // Result/summary
+}
+
+model Attempt {
+  id         String   @id @default(uuid())
+  scenario   Scenario @relation(fields: [scenarioId], references: [id], onDelete: Cascade)
+  scenarioId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  // Calculated from decision scores (no AI)
+  totalScore Int?  // 0-100
+  kpiScores  Json? // { communication: 85, situational_awareness: 72, ... }
+  passed     Boolean?
+
+  decisions Decision[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("attempts")
+}
+
+model Decision {
+  id        String  @id @default(uuid())
+  attempt   Attempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  attemptId String
+
+  nodeKey  String // Which decision node
+  choiceId String // "a", "b", "c" (from pre-defined choices)
+
+  // Pre-defined scores (from scenario JSON, no AI)
+  score     Int  // 0-100
+  kpiScores Json // { communication: 90, situational_awareness: 85 }
+
+  // Pre-written feedback (no AI)
+  feedback String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("decisions")
+}
+
+// ============================================================================
+// GAMIFICATION (OPTIONAL - only used if enabled)
+// ============================================================================
+
+model UserProfile {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  // XP per KPI (only tracked if gamification enabled)
+  xpCommunication    Int @default(0)
+  xpSituationalAware Int @default(0)
+  xpAuthorityGrad    Int @default(0)
+  xpDecisionMaking   Int @default(0)
+  xpLeadership       Int @default(0)
+
+  // Engagement
+  streakDays     Int       @default(0)
+  lastActiveDate DateTime?
+
+  badges Badge[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
+model Badge {
+  id        String      @id @default(uuid())
+  profile   UserProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+
+  badgeType String // "zero_harm_hero", "quick_thinker", "perfect_score"
+  name      String
+  icon      String
+
+  earnedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@map("badges")
+}
