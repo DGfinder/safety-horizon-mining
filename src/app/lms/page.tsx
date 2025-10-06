@@ -5,6 +5,7 @@ import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CheckCircle2, Lock, PlayCircle, Trophy, Calendar, AlertCircle } from 'lucide-react'
+import LMSLayout from '@/components/lms/LMSLayout'
 
 // For MVP, hardcode user (later will use NextAuth session)
 const DEMO_USER_EMAIL = 'wayne@pilotmine.com.au'
@@ -55,45 +56,68 @@ async function getDashboardData() {
   const completedModules = enrollment.moduleAttempts.filter((a) => a.passed).length
   const progressPercent = Math.round((completedModules / totalModules) * 100)
 
+  // Get active certificate
+  const activeCert = enrollment.certificates[0]
+  const certificateExpiryDays = activeCert
+    ? Math.ceil((new Date(activeCert.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    : null
+
+  // Prepare module data for sidebar
+  const modules = enrollment.course.modules.map((module) => {
+    const attempt = enrollment.moduleAttempts.find((a) => a.moduleId === module.id)
+    const isCompleted = attempt?.passed || false
+    const isLocked =
+      user.org?.settings?.requireSequential &&
+      module.orderIndex > (enrollment.currentModuleIndex || 1)
+
+    return {
+      id: module.id,
+      title: module.title,
+      orderIndex: module.orderIndex,
+      description: module.description,
+      scenarioId: module.scenarioId,
+      passed: isCompleted,
+      score: attempt?.score || null,
+      isLocked: isLocked || false,
+    }
+  })
+
   return {
     user,
     enrollment,
     totalModules,
     completedModules,
     progressPercent,
+    certificateExpiryDays,
+    modules,
   }
 }
 
 export default async function DashboardPage() {
   const data = await getDashboardData()
-  const { user, enrollment, totalModules, completedModules, progressPercent } = data
+  const { user, enrollment, totalModules, completedModules, progressPercent, certificateExpiryDays, modules } = data
 
   const activeCert = enrollment.certificates[0]
-  const daysUntilExpiry = activeCert
-    ? Math.ceil((new Date(activeCert.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    : null
+  const daysUntilExpiry = certificateExpiryDays
+
+  // Prepare data for sidebar
+  const enrollmentData = {
+    totalModules,
+    completedModules,
+    progressPercent,
+    currentModuleIndex: enrollment.currentModuleIndex,
+    certificateExpiryDays,
+    modules,
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
-      {/* Header */}
-      <div className="bg-[#192135] text-white py-8">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Welcome back, {user.name?.split(' ')[0]}!</h1>
-              <p className="text-slate-300 mt-1">{user.org?.name}</p>
-            </div>
-            <Link
-              href="/"
-              className="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition"
-            >
-              Home
-            </Link>
-          </div>
-        </div>
-      </div>
-
+    <LMSLayout user={user} enrollmentData={enrollmentData}>
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Welcome Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-[#192135]">Welcome back, {user.name?.split(' ')[0]}!</h1>
+          <p className="text-slate-600 mt-1">Continue your safety training journey</p>
+        </div>
         {/* Certification Status */}
         <Card className="mb-8 border-l-4 border-l-[#EC5C29]">
           <CardHeader>
@@ -276,6 +300,6 @@ export default async function DashboardPage() {
           </Card>
         )}
       </div>
-    </div>
+    </LMSLayout>
   )
 }
