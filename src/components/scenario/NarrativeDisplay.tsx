@@ -1,7 +1,8 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ChevronRight } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { ChevronRight, Clock, Cloud, MapPin, AlertTriangle } from 'lucide-react'
 
 type Props = {
   node: {
@@ -25,29 +26,35 @@ export default function NarrativeDisplay({ node, onNext }: Props) {
 
   return (
     <div className="p-8 md:p-12">
-      {/* Atmosphere Tags */}
+      {/* Professional Context Header */}
       {atmosphere && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          {atmosphere.time && (
-            <span className="px-3 py-1 bg-slate-700/50 text-slate-200 rounded-full text-xs">
-              🕐 {atmosphere.time}
-            </span>
-          )}
-          {atmosphere.weather && (
-            <span className="px-3 py-1 bg-slate-700/50 text-slate-200 rounded-full text-xs">
-              🌤️ {atmosphere.weather}
-            </span>
-          )}
-          {atmosphere.location && (
-            <span className="px-3 py-1 bg-slate-700/50 text-slate-200 rounded-full text-xs">
-              📍 {atmosphere.location}
-            </span>
-          )}
-          {atmosphere.urgency === 'HIGH' && (
-            <span className="px-3 py-1 bg-red-600/50 text-white rounded-full text-xs font-semibold animate-pulse">
-              ⚠️ HIGH URGENCY
-            </span>
-          )}
+        <div className="mb-6 bg-white/5 border border-white/10 rounded-lg p-4">
+          <div className="flex flex-wrap items-center gap-3">
+            {atmosphere.time && (
+              <Badge variant="outline" className="border-white/20 text-slate-200">
+                <Clock className="w-3 h-3 mr-1.5" />
+                {atmosphere.time}
+              </Badge>
+            )}
+            {atmosphere.weather && (
+              <Badge variant="outline" className="border-white/20 text-slate-200">
+                <Cloud className="w-3 h-3 mr-1.5" />
+                {atmosphere.weather}
+              </Badge>
+            )}
+            {atmosphere.location && (
+              <Badge variant="outline" className="border-white/20 text-slate-200">
+                <MapPin className="w-3 h-3 mr-1.5" />
+                {atmosphere.location}
+              </Badge>
+            )}
+            {atmosphere.urgency === 'HIGH' && (
+              <Badge className="bg-red-600/80 hover:bg-red-600 text-white border-red-500 animate-pulse">
+                <AlertTriangle className="w-3 h-3 mr-1.5" />
+                HIGH URGENCY
+              </Badge>
+            )}
+          </div>
         </div>
       )}
 
