@@ -21,7 +21,7 @@ export async function POST(
     }
 
     const { moduleId } = params
-    const { sections } = await request.json()
+    const { questions, passingScore } = await request.json()
 
     // Verify module exists
     const module = await prisma.module.findUnique({
@@ -32,35 +32,23 @@ export async function POST(
       return NextResponse.json({ error: 'Module not found' }, { status: 404 })
     }
 
-    // Delete existing sections
-    await prisma.contentSection.deleteMany({
-      where: { moduleId },
+    // Update module with quiz data
+    const updatedModule = await prisma.module.update({
+      where: { id: moduleId },
+      data: {
+        quizData: { questions },
+        passingScore,
+      },
     })
-
-    // Create new sections
-    const createdSections = await Promise.all(
-      sections.map((section: any) =>
-        prisma.contentSection.create({
-          data: {
-            moduleId,
-            orderIndex: section.orderIndex,
-            title: section.title,
-            subtitle: section.subtitle || null,
-            sectionType: 'MIXED',
-            content: { blocks: section.blocks || [] },
-          },
-        })
-      )
-    )
 
     return NextResponse.json({
       success: true,
-      sections: createdSections,
+      module: updatedModule,
     })
   } catch (error) {
-    console.error('Error saving content:', error)
+    console.error('Error saving quiz:', error)
     return NextResponse.json(
-      { error: 'Failed to save content' },
+      { error: 'Failed to save quiz' },
       { status: 500 }
     )
   }

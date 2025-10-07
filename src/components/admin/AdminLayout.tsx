@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { LayoutDashboard, BookOpen, Users, Settings, FileText, LogOut } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Users, Settings, FileText, LogOut, AlertTriangle, UserCheck, BarChart3, Bell, Code } from 'lucide-react'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -11,7 +11,12 @@ export default function AdminLayout({ children, currentPage }: AdminLayoutProps)
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Modules', href: '/admin/modules', icon: BookOpen },
     { name: 'Users', href: '/admin/users', icon: Users },
+    { name: 'Incidents', href: '/admin/incidents', icon: AlertTriangle },
+    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+    { name: 'Notifications', href: '/admin/notifications', icon: Bell },
     { name: 'Reports', href: '/admin/reports', icon: FileText },
+    { name: 'API Docs', href: '/admin/api-docs', icon: Code },
+    { name: 'Supervisor', href: '/supervisor', icon: UserCheck },
     { name: 'Settings', href: '/admin/settings', icon: Settings },
   ]
 

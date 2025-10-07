@@ -31,7 +31,18 @@ async function getModuleData(moduleId: string) {
     redirect('/admin/modules')
   }
 
-  return { module, user }
+  // Transform contentSections to match the expected interface
+  const transformedModule = {
+    ...module,
+    contentSections: module.contentSections.map(section => ({
+      id: section.id,
+      orderIndex: section.orderIndex,
+      title: section.title,
+      blocks: (section.content as any)?.blocks || section.content || [],
+    })),
+  }
+
+  return { module: transformedModule, user }
 }
 
 export default async function ModuleContentPage({

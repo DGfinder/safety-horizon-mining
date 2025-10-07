@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import { sendCertificateIssued } from '@/lib/email'
 
 const completeSchema = z.object({
   passed: z.boolean(),
@@ -147,7 +148,7 @@ export async function POST(
             const expiresAt = new Date()
             expiresAt.setMonth(expiresAt.getMonth() + validityMonths)
 
-            await prisma.certificate.create({
+            const newCertificate = await prisma.certificate.create({
               data: {
                 enrollmentId: enrollment.id,
                 serial,
@@ -155,6 +156,35 @@ export async function POST(
                 expiresAt,
               },
             })
+
+            // Send certificate email notification
+            try {
+              const certificateUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/certificates/${newCertificate.id}/download`
+
+              await sendCertificateIssued({
+                to: attempt.user.email,
+                name: attempt.user.name || attempt.user.email,
+                courseName: enrollment.course.title,
+                certificateUrl,
+                expiresAt: newCertificate.expiresAt,
+              })
+
+              // Log the email
+              await prisma.emailLog.create({
+                data: {
+                  userId: attempt.user.id,
+                  emailType: 'CERTIFICATE_ISSUED',
+                  certificateId: newCertificate.id,
+                  metadata: {
+                    courseName: enrollment.course.title,
+                    serial: newCertificate.serial,
+                  },
+                },
+              })
+            } catch (emailError) {
+              console.error('Failed to send certificate email:', emailError)
+              // Don't fail the completion if email fails
+            }
           }
         }
       }

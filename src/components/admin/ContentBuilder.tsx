@@ -20,7 +20,7 @@ import {
   ChevronRight,
   Table2,
   FileSearch,
-  Diagram3,
+  Network,
 } from 'lucide-react'
 
 interface Module {
@@ -57,7 +57,7 @@ export default function ContentBuilder({ module }: ContentBuilderProps) {
     { type: 'expandable-cards', label: 'Expandable Cards', icon: ChevronRight, color: 'teal' },
     { type: 'comparison-table', label: 'Comparison Table', icon: Table2, color: 'cyan' },
     { type: 'case-study', label: 'Case Study', icon: FileSearch, color: 'amber' },
-    { type: 'interactive-diagram', label: 'Interactive Diagram', icon: Diagram3, color: 'red' },
+    { type: 'interactive-diagram', label: 'Interactive Diagram', icon: Network, color: 'red' },
   ]
 
   const addSection = () => {
@@ -366,7 +366,7 @@ function BlockEditor({
       'expandable-cards': ChevronRight,
       'comparison-table': Table2,
       'case-study': FileSearch,
-      'interactive-diagram': Diagram3,
+      'interactive-diagram': Network,
     }
     return icons[type] || FileText
   }
@@ -476,10 +476,391 @@ function BlockEditor({
         </div>
       )}
 
-      {/* Add more block type editors as needed */}
-      {!['text', 'video', 'stats', 'objectives'].includes(block.type) && (
-        <div className="text-sm text-slate-500 p-4 bg-slate-50 rounded">
-          Editor for {block.type} - Coming soon
+      {block.type === 'reflection' && (
+        <div className="space-y-2">
+          {(block.questions || []).map((question: string, i: number) => (
+            <div key={i} className="flex gap-2 items-start">
+              <span className="text-sm font-medium text-slate-600 mt-2">{i + 1}.</span>
+              <textarea
+                value={question}
+                onChange={(e) => {
+                  const questions = [...block.questions]
+                  questions[i] = e.target.value
+                  onUpdate({ questions })
+                }}
+                rows={2}
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-lg"
+                placeholder={`Reflection question ${i + 1}`}
+              />
+              <button
+                onClick={() => {
+                  const questions = block.questions.filter((_: any, idx: number) => idx !== i)
+                  onUpdate({ questions })
+                }}
+                className="p-2 text-red-600 hover:text-red-700"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => onUpdate({ questions: [...(block.questions || []), ''] })}
+            className="text-sm text-[#EC5C29] hover:underline"
+          >
+            + Add question
+          </button>
+        </div>
+      )}
+
+      {block.type === 'grid' && (
+        <div className="space-y-3">
+          <input
+            type="text"
+            value={block.title || ''}
+            onChange={(e) => onUpdate({ title: e.target.value })}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold"
+            placeholder="Grid title"
+          />
+          <div className="space-y-2">
+            {(block.items || []).map((item: any, i: number) => (
+              <div key={i} className="p-3 border border-slate-200 rounded-lg space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={item.category || ''}
+                    onChange={(e) => {
+                      const items = [...block.items]
+                      items[i].category = e.target.value
+                      onUpdate({ items })
+                    }}
+                    className="w-32 px-2 py-1 border border-slate-300 rounded text-sm font-medium"
+                    placeholder="Category"
+                  />
+                  <input
+                    type="text"
+                    value={item.title || ''}
+                    onChange={(e) => {
+                      const items = [...block.items]
+                      items[i].title = e.target.value
+                      onUpdate({ items })
+                    }}
+                    className="flex-1 px-2 py-1 border border-slate-300 rounded text-sm font-semibold"
+                    placeholder="Item title"
+                  />
+                  <button
+                    onClick={() => {
+                      const items = block.items.filter((_: any, idx: number) => idx !== i)
+                      onUpdate({ items })
+                    }}
+                    className="p-1 text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <textarea
+                  value={item.description || ''}
+                  onChange={(e) => {
+                    const items = [...block.items]
+                    items[i].description = e.target.value
+                    onUpdate({ items })
+                  }}
+                  rows={2}
+                  className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                  placeholder="Description"
+                />
+              </div>
+            ))}
+            <button
+              onClick={() =>
+                onUpdate({
+                  items: [...(block.items || []), { category: '', title: '', description: '' }],
+                })
+              }
+              className="text-sm text-[#EC5C29] hover:underline"
+            >
+              + Add grid item
+            </button>
+          </div>
+        </div>
+      )}
+
+      {block.type === 'expandable-cards' && (
+        <div className="space-y-2">
+          {(block.cards || []).map((card: any, i: number) => (
+            <div key={i} className="p-3 border border-slate-200 rounded-lg space-y-2">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={card.title || ''}
+                  onChange={(e) => {
+                    const cards = [...block.cards]
+                    cards[i].title = e.target.value
+                    onUpdate({ cards })
+                  }}
+                  className="flex-1 px-2 py-1 border border-slate-300 rounded text-sm font-semibold"
+                  placeholder="Card title"
+                />
+                <button
+                  onClick={() => {
+                    const cards = block.cards.filter((_: any, idx: number) => idx !== i)
+                    onUpdate({ cards })
+                  }}
+                  className="p-1 text-red-600 hover:text-red-700"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+              <textarea
+                value={card.content || ''}
+                onChange={(e) => {
+                  const cards = [...block.cards]
+                  cards[i].content = e.target.value
+                  onUpdate({ cards })
+                }}
+                rows={3}
+                className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                placeholder="Card content (markdown supported)"
+              />
+            </div>
+          ))}
+          <button
+            onClick={() => onUpdate({ cards: [...(block.cards || []), { title: '', content: '' }] })}
+            className="text-sm text-[#EC5C29] hover:underline"
+          >
+            + Add card
+          </button>
+        </div>
+      )}
+
+      {block.type === 'comparison-table' && (
+        <div className="space-y-3">
+          <input
+            type="text"
+            value={block.title || ''}
+            onChange={(e) => onUpdate({ title: e.target.value })}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold"
+            placeholder="Comparison title"
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <input
+                type="text"
+                value={block.leftColumn?.title || ''}
+                onChange={(e) =>
+                  onUpdate({
+                    leftColumn: { ...block.leftColumn, title: e.target.value },
+                  })
+                }
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg font-medium"
+                placeholder="Left column title"
+              />
+              {(block.leftColumn?.items || []).map((item: string, i: number) => (
+                <input
+                  key={i}
+                  type="text"
+                  value={item}
+                  onChange={(e) => {
+                    const items = [...(block.leftColumn?.items || [])]
+                    items[i] = e.target.value
+                    onUpdate({ leftColumn: { ...block.leftColumn, items } })
+                  }}
+                  className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                  placeholder={`Item ${i + 1}`}
+                />
+              ))}
+              <button
+                onClick={() =>
+                  onUpdate({
+                    leftColumn: {
+                      ...block.leftColumn,
+                      items: [...(block.leftColumn?.items || []), ''],
+                    },
+                  })
+                }
+                className="text-xs text-[#EC5C29] hover:underline"
+              >
+                + Add item
+              </button>
+            </div>
+            <div className="space-y-2">
+              <input
+                type="text"
+                value={block.rightColumn?.title || ''}
+                onChange={(e) =>
+                  onUpdate({
+                    rightColumn: { ...block.rightColumn, title: e.target.value },
+                  })
+                }
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg font-medium"
+                placeholder="Right column title"
+              />
+              {(block.rightColumn?.items || []).map((item: string, i: number) => (
+                <input
+                  key={i}
+                  type="text"
+                  value={item}
+                  onChange={(e) => {
+                    const items = [...(block.rightColumn?.items || [])]
+                    items[i] = e.target.value
+                    onUpdate({ rightColumn: { ...block.rightColumn, items } })
+                  }}
+                  className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                  placeholder={`Item ${i + 1}`}
+                />
+              ))}
+              <button
+                onClick={() =>
+                  onUpdate({
+                    rightColumn: {
+                      ...block.rightColumn,
+                      items: [...(block.rightColumn?.items || []), ''],
+                    },
+                  })
+                }
+                className="text-xs text-[#EC5C29] hover:underline"
+              >
+                + Add item
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {block.type === 'case-study' && (
+        <div className="space-y-3">
+          <input
+            type="text"
+            value={block.title || ''}
+            onChange={(e) => onUpdate({ title: e.target.value })}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg font-semibold"
+            placeholder="Case study title"
+          />
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Situation</label>
+            <textarea
+              value={block.situation || ''}
+              onChange={(e) => onUpdate({ situation: e.target.value })}
+              rows={3}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              placeholder="Describe the situation..."
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Task</label>
+            <textarea
+              value={block.task || ''}
+              onChange={(e) => onUpdate({ task: e.target.value })}
+              rows={2}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              placeholder="What was the task or challenge?"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Action</label>
+            <textarea
+              value={block.action || ''}
+              onChange={(e) => onUpdate({ action: e.target.value })}
+              rows={3}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              placeholder="What actions were taken?"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Result</label>
+            <textarea
+              value={block.result || ''}
+              onChange={(e) => onUpdate({ result: e.target.value })}
+              rows={2}
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+              placeholder="What was the outcome?"
+            />
+          </div>
+        </div>
+      )}
+
+      {block.type === 'interactive-diagram' && (
+        <div className="space-y-3">
+          <input
+            type="text"
+            value={block.imageUrl || ''}
+            onChange={(e) => onUpdate({ imageUrl: e.target.value })}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+            placeholder="Image URL"
+          />
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Hotspots (Interactive Points)
+            </label>
+            {(block.hotspots || []).map((hotspot: any, i: number) => (
+              <div key={i} className="p-3 border border-slate-200 rounded-lg mb-2 space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={hotspot.x || 0}
+                    onChange={(e) => {
+                      const hotspots = [...block.hotspots]
+                      hotspots[i].x = parseInt(e.target.value)
+                      onUpdate({ hotspots })
+                    }}
+                    className="w-20 px-2 py-1 border border-slate-300 rounded text-sm"
+                    placeholder="X %"
+                  />
+                  <input
+                    type="number"
+                    value={hotspot.y || 0}
+                    onChange={(e) => {
+                      const hotspots = [...block.hotspots]
+                      hotspots[i].y = parseInt(e.target.value)
+                      onUpdate({ hotspots })
+                    }}
+                    className="w-20 px-2 py-1 border border-slate-300 rounded text-sm"
+                    placeholder="Y %"
+                  />
+                  <input
+                    type="text"
+                    value={hotspot.label || ''}
+                    onChange={(e) => {
+                      const hotspots = [...block.hotspots]
+                      hotspots[i].label = e.target.value
+                      onUpdate({ hotspots })
+                    }}
+                    className="flex-1 px-2 py-1 border border-slate-300 rounded text-sm"
+                    placeholder="Label"
+                  />
+                  <button
+                    onClick={() => {
+                      const hotspots = block.hotspots.filter((_: any, idx: number) => idx !== i)
+                      onUpdate({ hotspots })
+                    }}
+                    className="p-1 text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <textarea
+                  value={hotspot.description || ''}
+                  onChange={(e) => {
+                    const hotspots = [...block.hotspots]
+                    hotspots[i].description = e.target.value
+                    onUpdate({ hotspots })
+                  }}
+                  rows={2}
+                  className="w-full px-2 py-1 border border-slate-300 rounded text-sm"
+                  placeholder="Description shown on click"
+                />
+              </div>
+            ))}
+            <button
+              onClick={() =>
+                onUpdate({
+                  hotspots: [...(block.hotspots || []), { x: 50, y: 50, label: '', description: '' }],
+                })
+              }
+              className="text-sm text-[#EC5C29] hover:underline"
+            >
+              + Add hotspot
+            </button>
+          </div>
         </div>
       )}
     </div>

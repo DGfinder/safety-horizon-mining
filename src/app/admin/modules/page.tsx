@@ -5,6 +5,7 @@ import AdminLayout from '@/components/admin/AdminLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { BookOpen, Plus, Edit, Trash2, Copy, Settings, FileText, GitBranch, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
+import { ModuleActions } from '@/components/admin/ModuleActions'
 
 async function getModules() {
   const session = await auth()
@@ -235,21 +236,8 @@ export default async function ModulesListPage() {
                         </Link>
                       )}
 
-                      {/* Duplicate */}
-                      <button
-                        className="p-2 text-slate-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                        title="Duplicate module"
-                      >
-                        <Copy className="w-5 h-5" />
-                      </button>
-
-                      {/* Delete */}
-                      <button
-                        className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete module"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+                      {/* Duplicate & Delete */}
+                      <ModuleActions moduleId={module.id} moduleTitle={module.title} />
                     </div>
                   </div>
                 )

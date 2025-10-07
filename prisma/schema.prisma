@@ -22,6 +22,7 @@ model Org {
   settings  OrgSettings?
   users     User[]
   courses   Course[]
+  sites     Site[]    // Mining sites/operations
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -65,11 +66,25 @@ model User {
   orgId         String?
   role          Role      @default(LEARNER)
 
-  enrollments Enrollment[]
-  attempts    Attempt[]
-  profile     UserProfile?
-  accounts    Account[]  // For NextAuth OAuth
-  sessions    Session[]  // For NextAuth sessions
+  // Site & Crew assignment
+  site          Site?     @relation(fields: [siteId], references: [id])
+  siteId        String?
+  crew          Crew?     @relation("CrewMembers", fields: [crewId], references: [id])
+  crewId        String?
+
+  // Job information
+  jobTitle      String?   // "Haul Truck Operator", "Shift Supervisor"
+  employeeId    String?   // Company employee number
+  department    String?   // "Mining Operations", "Maintenance"
+
+  enrollments      Enrollment[]
+  attempts         Attempt[]
+  profile          UserProfile?
+  accounts         Account[]  // For NextAuth OAuth
+  sessions         Session[]  // For NextAuth sessions
+  supervisingCrews Crew[]     @relation("SupervisorCrews")
+  incidentReports  Incident[] @relation("IncidentReporter")
+  emailLogs        EmailLog[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -81,6 +96,67 @@ enum Role {
   LEARNER
   SUPERVISOR
   ADMIN
+}
+
+// ============================================================================
+// SITE & CREW MANAGEMENT
+// ============================================================================
+
+model Site {
+  id    String @id @default(uuid())
+  org   Org    @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  orgId String
+
+  name         String  // "North Pit Operations", "Underground East"
+  code         String? // Short code: "NP", "UE"
+  siteType     SiteType
+  location     String? // "Pilbara, WA", "Hunter Valley, NSW"
+  isActive     Boolean @default(true)
+
+  crews       Crew[]
+  users       User[]  // Workers assigned to this site
+  incidents   Incident[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([orgId, code])
+  @@map("sites")
+}
+
+enum SiteType {
+  OPEN_PIT
+  UNDERGROUND
+  MIXED
+  PROCESSING_PLANT
+  PORT_FACILITY
+}
+
+model Crew {
+  id     String @id @default(uuid())
+  site   Site   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId String
+
+  name           String  // "A Crew", "Day Shift Operators"
+  supervisor     User?   @relation("SupervisorCrews", fields: [supervisorId], references: [id])
+  supervisorId   String?
+  shift          Shift   @default(DAY)
+  department     String? // "Mining", "Haulage", "Maintenance"
+  isActive       Boolean @default(true)
+
+  members User[] @relation("CrewMembers")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("crews")
+}
+
+enum Shift {
+  DAY
+  NIGHT
+  SWING
+  ROSTER_BASED
 }
 
 // ============================================================================
@@ -96,6 +172,11 @@ model Course {
   title       String       @default("Crew Resource Management for Mining")
   description String?
   status      CourseStatus @default(PUBLISHED)
+
+  // Role-based learning paths
+  targetRoles  String[]     // ["OPERATOR", "SUPERVISOR", "ENGINEER"] - empty = all roles
+  siteTypes    SiteType[]   // Applicable site types - empty = all types
+  departments  String[]     // Target departments - empty = all
 
   modules     Module[]
   enrollments Enrollment[]
@@ -301,6 +382,8 @@ model Certificate {
   // PDF generation
   pdfUrl String?
 
+  emailLogs EmailLog[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -325,8 +408,9 @@ model Scenario {
   difficulty       Difficulty @default(INTERMEDIATE)
   kpiFocus         String[]   // ["communication", "situational_awareness"]
 
-  nodes    ScenarioNode[]
-  attempts Attempt[]
+  nodes             ScenarioNode[]
+  attempts          Attempt[]
+  sourceIncident    Incident?  // Back-reference if created from an incident
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -413,6 +497,89 @@ model Decision {
 }
 
 // ============================================================================
+// INCIDENT MANAGEMENT & LEARNING
+// ============================================================================
+
+model Incident {
+  id     String @id @default(uuid())
+  site   Site   @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  siteId String
+
+  // Incident metadata
+  incidentNumber  String   @unique  // "INC-2025-001"
+  title           String
+  description     String
+  incidentDate    DateTime
+  reportedAt      DateTime @default(now())
+  reportedBy      User     @relation("IncidentReporter", fields: [reportedById], references: [id])
+  reportedById    String
+
+  // Classification
+  severity        IncidentSeverity
+  category        IncidentCategory
+  incidentType    String[]  // ["Near Miss", "Equipment Damage", "Safety Violation"]
+
+  // Location
+  location        String    // Specific pit/section/area
+  equipment       String?   // Equipment involved
+
+  // Investigation
+  rootCause       String?
+  contributingFactors String[]
+  correctiveActions   String[]
+  investigationStatus InvestigationStatus @default(REPORTED)
+
+  // Training integration
+  scenarioCreated    Boolean @default(false)  // Has this been converted to training?
+  generatedScenario  Scenario? @relation(fields: [generatedScenarioId], references: [id])
+  generatedScenarioId String? @unique
+
+  // Lessons learned
+  keyLessons         String[]
+  kpiAreasAffected   String[]  // Which KPIs relate to this incident
+
+  // Mandatory refresher tracking
+  refresherRequired  Boolean @default(false)
+  refresherAssigned  DateTime?
+  refresherCompleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("incidents")
+}
+
+enum IncidentSeverity {
+  NEAR_MISS
+  MINOR
+  MODERATE
+  MAJOR
+  CRITICAL
+  FATALITY
+}
+
+enum IncidentCategory {
+  EQUIPMENT_OPERATION
+  COMMUNICATION_FAILURE
+  SITUATIONAL_AWARENESS
+  DECISION_MAKING
+  LEADERSHIP_FAILURE
+  PROCEDURE_VIOLATION
+  ENVIRONMENTAL
+  MEDICAL
+  SECURITY
+}
+
+enum InvestigationStatus {
+  REPORTED
+  UNDER_INVESTIGATION
+  ROOT_CAUSE_IDENTIFIED
+  CORRECTIVE_ACTIONS_PENDING
+  COMPLETED
+  CLOSED
+}
+
+// ============================================================================
 // GAMIFICATION (OPTIONAL - only used if enabled)
 // ============================================================================
 
@@ -496,4 +663,30 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+// ============================================================================
+// EMAIL NOTIFICATION SYSTEM
+// ============================================================================
+
+model EmailLog {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  emailType     EmailType
+  certificateId String?
+  certificate   Certificate? @relation(fields: [certificateId], references: [id], onDelete: Cascade)
+
+  sentAt   DateTime  @default(now())
+  metadata Json?     // Additional context (e.g., daysUntilExpiry, courseTitle)
+
+  @@map("email_logs")
+}
+
+enum EmailType {
+  WELCOME
+  EXPIRY_REMINDER
+  CERTIFICATE_ISSUED
+  INCIDENT_NOTIFICATION
 }
