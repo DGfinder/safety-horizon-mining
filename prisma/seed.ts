@@ -1,5 +1,8 @@
 import { PrismaClient, NodeType, ScenarioStatus, Difficulty, ModuleKind } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { module1Sections } from './module1-content'
+import { module1ScenarioNodes, module1ScenarioMeta } from './module1-scenario'
+import { module1Quiz } from './module1-quiz'
 
 const prisma = new PrismaClient()
 
@@ -103,7 +106,7 @@ async function main() {
       orderIndex: 1,
       title: 'Foundations of HF & Safety Culture',
       description: 'Core principles and cultural transformation',
-      kind: ModuleKind.SCENARIO,
+      kind: ModuleKind.HYBRID, // HYBRID: Content sections + scenario + quiz
     },
     {
       orderIndex: 2,
@@ -181,7 +184,9 @@ async function main() {
           orderIndex: moduleData.orderIndex,
         },
       },
-      update: {},
+      update: {
+        kind: moduleData.kind, // Update kind field for existing modules
+      },
       create: {
         courseId: course.id,
         ...moduleData,
@@ -193,10 +198,105 @@ async function main() {
   console.log('✅ Created 12 modules')
 
   // ============================================================================
-  // 5. Create Sample Scenarios
+  // 4.5. Seed Module 1 (HYBRID: Content Sections + Scenario + Quiz)
   // ============================================================================
 
-  // ---- Scenario 0: The Near-Miss Report (Module 1) ----
+  console.log('🌱 Seeding Module 1: Foundations of HF & Safety Culture...')
+
+  // Get Module 1
+  const module1 = await prisma.module.findUnique({
+    where: {
+      courseId_orderIndex: {
+        courseId: course.id,
+        orderIndex: 1,
+      },
+    },
+  })
+
+  if (!module1) {
+    throw new Error('Module 1 not found')
+  }
+
+  // Create the practice scenario: "Your First HF Decision"
+  const module1Scenario = await prisma.scenario.upsert({
+    where: { slug: module1ScenarioMeta.slug },
+    update: {},
+    create: {
+      slug: module1ScenarioMeta.slug,
+      title: module1ScenarioMeta.title,
+      moduleNumber: module1ScenarioMeta.moduleNumber,
+      version: module1ScenarioMeta.version,
+      status: module1ScenarioMeta.status,
+      estimatedMinutes: module1ScenarioMeta.estimatedMinutes,
+      difficulty: module1ScenarioMeta.difficulty,
+      kpiFocus: module1ScenarioMeta.kpiFocus,
+    },
+  })
+
+  // Create scenario nodes
+  await prisma.scenarioNode.createMany({
+    data: module1ScenarioNodes.map((node: any) => ({
+      scenarioId: module1Scenario.id,
+      nodeKey: node.nodeKey,
+      nodeType: node.nodeType,
+      body: node.body,
+    })),
+    skipDuplicates: true,
+  })
+
+  console.log('✅ Created Module 1 practice scenario:', module1Scenario.title)
+
+  // Create Content Sections (1A through 1F)
+  for (const sectionData of module1Sections) {
+    await prisma.contentSection.upsert({
+      where: {
+        moduleId_orderIndex: {
+          moduleId: module1.id,
+          orderIndex: sectionData.orderIndex,
+        },
+      },
+      update: {
+        title: sectionData.title,
+        subtitle: sectionData.subtitle,
+        sectionType: sectionData.sectionType,
+        content: sectionData.content,
+        estimatedMinutes: sectionData.estimatedMinutes,
+      },
+      create: {
+        moduleId: module1.id,
+        orderIndex: sectionData.orderIndex,
+        title: sectionData.title,
+        subtitle: sectionData.subtitle,
+        sectionType: sectionData.sectionType,
+        content: sectionData.content,
+        estimatedMinutes: sectionData.estimatedMinutes,
+      },
+    })
+
+    console.log(`✅ Created content section ${sectionData.orderIndex}: ${sectionData.title}`)
+  }
+
+  // Update Module 1 to link scenario and quiz
+  await prisma.module.update({
+    where: {
+      courseId_orderIndex: {
+        courseId: course.id,
+        orderIndex: 1,
+      },
+    },
+    data: {
+      scenarioId: module1Scenario.id,
+      quizData: module1Quiz,
+    },
+  })
+
+  console.log('✅ Module 1 complete: HYBRID with 6 content sections, scenario, and quiz')
+
+  // ============================================================================
+  // 5. Create Sample Scenarios (for other modules)
+  // ============================================================================
+
+  // ---- Scenario 0: The Near-Miss Report (DEPRECATED - replaced by Module 1 HYBRID) ----
   const scenario0 = await prisma.scenario.upsert({
     where: { slug: 'near-miss-report' },
     update: {},
