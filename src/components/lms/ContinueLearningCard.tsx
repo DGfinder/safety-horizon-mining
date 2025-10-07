@@ -42,7 +42,7 @@ export default function ContinueLearningCard({ moduleTitle, moduleNumber, scenar
 
           {/* Action Button */}
           <Link
-            href={`/lms/scenarios/${scenarioId}?moduleId=${moduleId}`}
+            href={`/lms/modules/${moduleId}`}
             className="flex-shrink-0 px-6 py-3 bg-[#EC5C29] text-white rounded-lg hover:bg-[#EC5C29]/90 transition-colors font-semibold flex items-center gap-2 group"
           >
             <span>{progress > 0 ? 'Resume' : 'Start'}</span>

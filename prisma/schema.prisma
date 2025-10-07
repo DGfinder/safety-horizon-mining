@@ -132,7 +132,8 @@ model Module {
   required      Boolean @default(true)
   passingScore  Int     @default(70) // Percentage
 
-  attempts ModuleAttempt[]
+  attempts        ModuleAttempt[]
+  contentSections ContentSection[] // For hybrid modules
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -146,6 +147,61 @@ enum ModuleKind {
   VIDEO
   POLICY
   QUIZ
+  HYBRID // Content sections + scenario + quiz
+}
+
+// Content sections for hybrid modules
+model ContentSection {
+  id       String @id @default(uuid())
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  moduleId String
+
+  orderIndex Int    // 1, 2, 3 (for sections 1A, 1B, 1C)
+  title      String // "WHY Human Factors?"
+  subtitle   String? // "The Tenerife disaster and the birth of CRM"
+
+  sectionType ContentSectionType
+
+  // Content stored as JSON (flexible for different types)
+  content Json // { text, videos, interactives, images, etc. }
+
+  // Metadata
+  estimatedMinutes Int @default(5)
+
+  // Progress tracking
+  completions ContentSectionCompletion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([moduleId, orderIndex])
+  @@map("content_sections")
+}
+
+enum ContentSectionType {
+  TEXT         // Rich text with formatting
+  VIDEO        // Video player with transcript
+  INTERACTIVE  // Quiz, matching game, self-assessment
+  DIAGRAM      // SVG/image with hotspots
+  MIXED        // Combination of above
+}
+
+// Track which users have completed which content sections
+model ContentSectionCompletion {
+  id               String         @id @default(uuid())
+  contentSection   ContentSection @relation(fields: [contentSectionId], references: [id], onDelete: Cascade)
+  contentSectionId String
+  enrollment       Enrollment     @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId     String
+
+  completedAt DateTime @default(now())
+  timeSpentSeconds Int? // Optional: track engagement
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([contentSectionId, enrollmentId])
+  @@map("content_section_completions")
 }
 
 // ============================================================================
@@ -168,8 +224,9 @@ model Enrollment {
   // Progress tracking
   currentModuleIndex Int @default(1)
 
-  moduleAttempts ModuleAttempt[]
-  certificates   Certificate[]
+  moduleAttempts           ModuleAttempt[]
+  certificates             Certificate[]
+  contentSectionCompletions ContentSectionCompletion[] // Track content section progress
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
