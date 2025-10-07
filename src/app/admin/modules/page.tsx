@@ -3,7 +3,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/db'
 import AdminLayout from '@/components/admin/AdminLayout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { BookOpen, Plus, Edit, Trash2, Copy } from 'lucide-react'
+import { BookOpen, Plus, Edit, Trash2, Copy, Settings, FileText, GitBranch, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
 
 async function getModules() {
@@ -24,8 +24,6 @@ async function getModules() {
     include: {
       course: true,
       contentSections: true,
-      scenario: true,
-      quiz: true,
     },
     orderBy: [
       { courseId: 'asc' },
@@ -39,7 +37,7 @@ async function getModules() {
 function getModuleStatusBadge(module: any) {
   const hasContent = module.contentSections.length > 0
   const hasScenario = !!module.scenarioId
-  const hasQuiz = !!module.quizId
+  const hasQuiz = !!module.quizData
 
   if (module.kind === 'HYBRID' && hasContent && hasScenario) {
     return { text: 'Complete', color: 'bg-green-100 text-green-800' }
@@ -195,19 +193,57 @@ export default async function ModulesListPage() {
                     </div>
 
                     <div className="flex items-center gap-2 ml-4">
+                      {/* Edit Metadata */}
                       <Link
                         href={`/admin/modules/${module.id}/edit`}
-                        className="p-2 text-slate-600 hover:text-[#EC5C29] hover:bg-[#EC5C29]/10 rounded-lg transition-colors"
-                        title="Edit module"
+                        className="p-2 text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
+                        title="Edit metadata"
                       >
-                        <Edit className="w-5 h-5" />
+                        <Settings className="w-5 h-5" />
                       </Link>
+
+                      {/* Edit Content (for HYBRID, VIDEO, POLICY) */}
+                      {(module.kind === 'HYBRID' || module.kind === 'VIDEO' || module.kind === 'POLICY') && (
+                        <Link
+                          href={`/admin/modules/${module.id}/content`}
+                          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Edit content"
+                        >
+                          <FileText className="w-5 h-5" />
+                        </Link>
+                      )}
+
+                      {/* Edit Scenario (for HYBRID, SCENARIO) */}
+                      {(module.kind === 'HYBRID' || module.kind === 'SCENARIO') && (
+                        <Link
+                          href={`/admin/modules/${module.id}/scenario`}
+                          className="p-2 text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded-lg transition-colors"
+                          title="Edit scenario"
+                        >
+                          <GitBranch className="w-5 h-5" />
+                        </Link>
+                      )}
+
+                      {/* Edit Quiz (for QUIZ) */}
+                      {module.kind === 'QUIZ' && (
+                        <Link
+                          href={`/admin/modules/${module.id}/quiz`}
+                          className="p-2 text-orange-600 hover:text-orange-800 hover:bg-orange-50 rounded-lg transition-colors"
+                          title="Edit quiz"
+                        >
+                          <HelpCircle className="w-5 h-5" />
+                        </Link>
+                      )}
+
+                      {/* Duplicate */}
                       <button
-                        className="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-slate-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                         title="Duplicate module"
                       >
                         <Copy className="w-5 h-5" />
                       </button>
+
+                      {/* Delete */}
                       <button
                         className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                         title="Delete module"

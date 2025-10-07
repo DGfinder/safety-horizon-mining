@@ -2924,6 +2924,24 @@ async function main() {
   })
   console.log('✅ Created sample enrollment for', learner.name)
 
+  // Create enrollment for admin user (so they can test learner view)
+  const adminEnrollment = await prisma.enrollment.upsert({
+    where: {
+      userId_courseId: {
+        userId: admin.id,
+        courseId: course.id,
+      },
+    },
+    update: {},
+    create: {
+      userId: admin.id,
+      courseId: course.id,
+      status: 'ENROLLED',
+      dueAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+    },
+  })
+  console.log('✅ Created sample enrollment for', admin.name)
+
   console.log('\n🎉 Seed completed successfully!')
   console.log('\n📊 Summary:')
   console.log('   - 1 Organization (Pilot Mine Operations)')
@@ -2931,7 +2949,7 @@ async function main() {
   console.log('   - 1 Course (CRM for Mining)')
   console.log('   - 12 Modules')
   console.log('   - 3 Scenarios (Night Shift, Pre-Start, Emergency)')
-  console.log('   - 1 Enrollment\n')
+  console.log('   - 2 Enrollments\n')
 }
 
 main()

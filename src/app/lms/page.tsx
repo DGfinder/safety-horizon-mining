@@ -38,6 +38,11 @@ async function getDashboardData() {
 
   if (!user) throw new Error('User not found')
 
+  // Redirect admin users to admin dashboard (unless explicitly viewing learner view)
+  if (user.role === 'ADMIN') {
+    redirect('/admin')
+  }
+
   // Get enrollment
   const enrollment = await prisma.enrollment.findFirst({
     where: { userId: user.id },
@@ -140,7 +145,7 @@ export default async function DashboardPage() {
         {/* 🎯 ABOVE THE FOLD - Most Important */}
 
         {/* Continue Learning Card - PRIMARY ACTION */}
-        {currentModule && currentModule.scenarioId && (
+        {currentModule && (
           <div className="mb-6">
             <ContinueLearningCard
               moduleTitle={currentModule.title}
@@ -338,7 +343,7 @@ export default async function DashboardPage() {
                       <div>
                         {isCompleted ? (
                           <Link
-                            href={`/lms/scenarios/${module.scenarioId}?moduleId=${module.id}`}
+                            href={`/lms/modules/${module.id}`}
                             className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition text-sm"
                           >
                             Review
@@ -352,7 +357,7 @@ export default async function DashboardPage() {
                           </button>
                         ) : (
                           <Link
-                            href={`/lms/scenarios/${module.scenarioId}?moduleId=${module.id}`}
+                            href={`/lms/modules/${module.id}`}
                             className="px-4 py-2 bg-[#EC5C29] text-white rounded-lg hover:bg-[#EC5C29]/90 transition text-sm font-semibold"
                           >
                             {isInProgress ? 'Retry' : 'Start'}
@@ -385,7 +390,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Floating Next Module Button */}
-      {nextModule && nextModule.scenarioId && (
+      {nextModule && (
         <FloatingNextModule
           moduleTitle={nextModule.title}
           moduleNumber={nextModule.orderIndex}
