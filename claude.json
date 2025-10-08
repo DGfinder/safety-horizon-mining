@@ -1,0 +1,93 @@
+{
+  "projectInfo": {
+    "name": "Safety Horizon Mining LMS",
+    "description": "Enterprise Learning Management System for mining operations, applying aviation Crew Resource Management (CRM) principles to improve mining safety. Includes incident-driven learning, compliance reporting, advanced analytics, and automated notifications.",
+    "version": "1.0.0",
+    "type": "Next.js 14 Full-Stack Application"
+  },
+  "architecture": {
+    "frontend": "Next.js 14 App Router, TypeScript, Tailwind CSS, Shadcn UI",
+    "backend": "Next.js API Routes, Prisma ORM, PostgreSQL (Neon)",
+    "authentication": "NextAuth with session-based auth",
+    "email": "Resend for transactional emails",
+    "deployment": "Vercel (hosting + cron jobs)",
+    "database": "Neon PostgreSQL (Sydney region)"
+  },
+  "keyFeatures": [
+    "Multi-tenancy (Org → Sites → Crews → Users)",
+    "Incident-to-Scenario Auto-Generator (unique competitive advantage)",
+    "TRIFR tracking and KPI weakness heatmaps",
+    "Certificate PDF generation with QR verification",
+    "Automated email notifications (90/60/30/14/7/3/1-day reminders)",
+    "Bulk user CSV import with auto-enrollment",
+    "Compliance reporting (CSV export for regulators)",
+    "Supervisor dashboards with real-time team compliance",
+    "Quiz builder and scenario editor",
+    "API integration guide for Cority, Intelex, Workday, SAP"
+  ],
+  "codeStandards": {
+    "typescript": "Strict mode enabled, no 'any' types without justification",
+    "components": "Server Components by default, 'use client' only when needed",
+    "styling": "Tailwind utility classes, avoid inline styles",
+    "errorHandling": "Try-catch in API routes, return appropriate status codes",
+    "database": "Use Prisma for all database queries, include error handling",
+    "authentication": "Always verify session in API routes and server components"
+  },
+  "fileStructure": {
+    "pages": "src/app/[role]/[feature]/page.tsx",
+    "components": "src/components/[role]/ComponentName.tsx",
+    "apiRoutes": "src/app/api/[scope]/[resource]/route.ts",
+    "lib": "src/lib/[utility].ts (email, pdf, etc.)",
+    "database": "prisma/schema.prisma"
+  },
+  "commonTasks": {
+    "runDev": "npm run dev",
+    "build": "npm run build",
+    "databasePush": "npx prisma db push",
+    "databaseMigrate": "npx prisma migrate dev",
+    "generatePrisma": "npx prisma generate",
+    "seedDatabase": "npx prisma db seed",
+    "typeCheck": "npm run type-check",
+    "lint": "npm run lint"
+  },
+  "environmentVariables": {
+    "required": [
+      "DATABASE_URL",
+      "DIRECT_URL",
+      "NEXTAUTH_URL",
+      "NEXTAUTH_SECRET",
+      "NEXT_PUBLIC_APP_URL"
+    ],
+    "optional": [
+      "RESEND_API_KEY (for email notifications)",
+      "CRON_SECRET (for automated reminders)"
+    ]
+  },
+  "roles": {
+    "LEARNER": "Standard workers completing training modules",
+    "SUPERVISOR": "Crew leaders with team oversight and compliance monitoring",
+    "ADMIN": "Full platform management, analytics, incident reporting, user management"
+  },
+  "businessContext": {
+    "targetMarket": "Mining operations (200-500 workers, multiple sites)",
+    "pricing": "$40-100/user/year depending on tier",
+    "roi": "150-2000% (saves $75k-600k in prevented incidents)",
+    "competitiveAdvantage": "Only LMS that auto-converts incidents to training scenarios within 30 days (aviation methodology)"
+  },
+  "developmentNotes": {
+    "avoidAI": "This platform does NOT use AI for content generation. Incident-to-scenario conversion is template-based.",
+    "complianceFirst": "All features must support regulatory compliance (DMIRS, Resources Safety)",
+    "miningSpecific": "Focus on mining operations: shifts, crews, sites, equipment, ICAM framework",
+    "aviationMethodology": "Apply aviation CRM principles: 8 KPIs, just culture, psychological safety"
+  },
+  "knownIssues": [],
+  "nextSteps": [
+    "Phase 6: Mobile offline mode for underground sites",
+    "Phase 6: SCORM export for legacy LMS integration",
+    "Phase 6: Webhook system for external integrations",
+    "Phase 7: Pre-start integration (scenarios before shift)",
+    "Phase 7: Video content support (toolbox talks)",
+    "Phase 8: Microsoft Teams integration",
+    "Phase 8: Multi-language support (Spanish, Mandarin)"
+  ]
+}
