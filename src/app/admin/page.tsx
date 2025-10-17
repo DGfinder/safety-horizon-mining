@@ -56,43 +56,49 @@ export default async function AdminDashboardPage() {
     <AdminLayout currentPage="dashboard">
       <div className="space-y-8">
         {/* Welcome Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Welcome back, {user.name}</h1>
-          <p className="text-slate-600 mt-1">Manage your LMS content and monitor learner progress</p>
+        <div className="bg-gradient-to-r from-[#192135] to-[#192135]/90 text-white px-8 py-6 rounded-xl shadow-lg">
+          <h1 className="text-3xl font-bold">Welcome back, {user.name}</h1>
+          <p className="text-white/80 mt-2 text-base">Manage your LMS content, monitor learner progress, and ensure safety excellence</p>
         </div>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
+          <Card className="border-l-4 border-l-[#EC5C29] bg-gradient-to-br from-[#EC5C29]/5 to-transparent hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">Total Modules</CardTitle>
-              <BookOpen className="w-5 h-5 text-[#EC5C29]" />
+              <div className="p-2 bg-[#EC5C29]/10 rounded-lg">
+                <BookOpen className="w-5 h-5 text-[#EC5C29]" />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-slate-900">{stats.totalModules}</div>
-              <Link href="/admin/modules" className="text-xs text-[#EC5C29] hover:underline mt-2 inline-block">
+              <Link href="/admin/modules" className="text-xs text-[#EC5C29] hover:underline mt-2 inline-block font-medium">
                 Manage modules →
               </Link>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-blue-600 bg-gradient-to-br from-blue-50/50 to-transparent hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">Total Users</CardTitle>
-              <Users className="w-5 h-5 text-blue-600" />
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Users className="w-5 h-5 text-blue-600" />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-slate-900">{stats.totalUsers}</div>
-              <Link href="/admin/users" className="text-xs text-blue-600 hover:underline mt-2 inline-block">
+              <Link href="/admin/users" className="text-xs text-blue-600 hover:underline mt-2 inline-block font-medium">
                 View users →
               </Link>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-green-600 bg-gradient-to-br from-green-50/50 to-transparent hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">Active Enrollments</CardTitle>
-              <TrendingUp className="w-5 h-5 text-green-600" />
+              <div className="p-2 bg-green-100 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-green-600" />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-slate-900">{stats.totalEnrollments}</div>
@@ -100,10 +106,12 @@ export default async function AdminDashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-purple-600 bg-gradient-to-br from-purple-50/50 to-transparent hover:shadow-md transition-shadow">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">Scenarios</CardTitle>
-              <Award className="w-5 h-5 text-purple-600" />
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <Award className="w-5 h-5 text-purple-600" />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold text-slate-900">{stats.totalScenarios}</div>
@@ -121,28 +129,28 @@ export default async function AdminDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link
                 href="/admin/modules/new"
-                className="p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-[#EC5C29] hover:bg-[#EC5C29]/5 transition-colors text-center"
+                className="p-6 border-2 border-slate-200 rounded-lg hover:border-[#EC5C29] hover:shadow-lg hover:shadow-[#EC5C29]/10 bg-white hover:bg-[#EC5C29]/5 transition-all text-center group"
               >
-                <BookOpen className="w-8 h-8 text-[#EC5C29] mx-auto mb-2" />
-                <div className="font-semibold text-slate-900">Create New Module</div>
+                <BookOpen className="w-10 h-10 text-[#EC5C29] mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                <div className="font-semibold text-slate-900 text-base">Create New Module</div>
                 <div className="text-xs text-slate-600 mt-1">Build a new learning module</div>
               </Link>
 
               <Link
                 href="/admin/users/new"
-                className="p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-blue-600 hover:bg-blue-50 transition-colors text-center"
+                className="p-6 border-2 border-slate-200 rounded-lg hover:border-blue-600 hover:shadow-lg hover:shadow-blue-600/10 bg-white hover:bg-blue-50 transition-all text-center group"
               >
-                <Users className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                <div className="font-semibold text-slate-900">Add User</div>
+                <Users className="w-10 h-10 text-blue-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                <div className="font-semibold text-slate-900 text-base">Add User</div>
                 <div className="text-xs text-slate-600 mt-1">Invite a new learner or admin</div>
               </Link>
 
               <Link
                 href="/admin/reports"
-                className="p-4 border-2 border-dashed border-slate-300 rounded-lg hover:border-green-600 hover:bg-green-50 transition-colors text-center"
+                className="p-6 border-2 border-slate-200 rounded-lg hover:border-green-600 hover:shadow-lg hover:shadow-green-600/10 bg-white hover:bg-green-50 transition-all text-center group"
               >
-                <TrendingUp className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                <div className="font-semibold text-slate-900">View Reports</div>
+                <TrendingUp className="w-10 h-10 text-green-600 mx-auto mb-3 group-hover:scale-110 transition-transform" />
+                <div className="font-semibold text-slate-900 text-base">View Reports</div>
                 <div className="text-xs text-slate-600 mt-1">Analyze learner performance</div>
               </Link>
             </div>

@@ -22,7 +22,8 @@
       "Bash(npm run dev:*)",
       "Bash(npm run lint)",
       "Bash(npm run type-check:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }
